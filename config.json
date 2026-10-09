@@ -8,21 +8,24 @@
       "url": "https://daknux.github.io/",
       "description": "Collection of unblocked games.",
       "tags": ["collection"],
-      "blockedBy": []
+      "blockedBy": [],
+      "verified": true
     },
     {
       "title": "Christianity Trees",
       "url": "https://christianitytrees.xishuidata.com/",
       "description": "Unblocked game site.",
       "tags": ["collection"],
-      "blockedBy": []
+      "blockedBy": [],
+      "verified": true
     },
     {
       "title": "TTBest",
       "url": "https://ttbest.s3.amazonaws.com/index.html",
       "description": "S3 hosted unblocked games.",
       "tags": ["collection"],
-      "blockedBy": []
+      "blockedBy": [],
+      "verified": true
     }
   ]
 }
