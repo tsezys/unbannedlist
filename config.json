@@ -1,4 +1,3 @@
-
 {
   "siteTitle": "Unblocked",
   "siteDescription": "Game links",
@@ -27,21 +26,23 @@
       "blockedBy": [],
       "verified": true
     },
-       {
+    {
       "title": "games",
       "url": "https://gamebackup.github.io",
-      "description": "[BARELY NEW] most extensions block 'game' in the url.",
-      "tags": ["collection"],
+      "description": "Most extensions block 'game' in the url.",
+      "tags": ["collection", "new"],
       "blockedBy": [],
-      "verified": false
-    }
-        {
+      "verified": false,
+      "new": true
+    },
+    {
       "title": "kiwk",
       "url": "https://kiwi.at.it/",
-      "description": "[BARELY NEW] pretty sick!",
-      "tags": ["collection"],
+      "description": "Pretty sick!",
+      "tags": ["collection", "new"],
       "blockedBy": [],
-      "verified": false
-    },
+      "verified": false,
+      "new": true
+    }
   ]
 }
