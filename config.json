@@ -1,12 +1,27 @@
 {
-  "siteTitle": "unbanned list",
-  "siteDescription": "yues",
+  "siteTitle": "Unblocked",
+  "siteDescription": "Game links",
   "links": [
     {
-      "title": "Slope",
-      "url": "https://slopegame.io",
-      "description": "Endless downhill racing. Super addictive.",
-      "tags": ["popular", "3d", "endless"]
+      "title": "Daknux",
+      "url": "https://daknux.github.io/",
+      "description": "Collection of unblocked games.",
+      "tags": ["collection"],
+      "blockedBy": []
+    },
+    {
+      "title": "Christianity Trees",
+      "url": "https://christianitytrees.xishuidata.com/",
+      "description": "Unblocked game site.",
+      "tags": ["collection"],
+      "blockedBy": []
+    },
+    {
+      "title": "TTBest",
+      "url": "https://ttbest.s3.amazonaws.com/index.html",
+      "description": "hosted unblocked games.",
+      "tags": ["collection"],
+      "blockedBy": []
     },
   ]
 }
