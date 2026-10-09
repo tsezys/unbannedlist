@@ -26,6 +26,22 @@
       "tags": ["collection"],
       "blockedBy": [],
       "verified": true
+    },
+       {
+      "title": "games",
+      "url": "https://gamebackup.github.io",
+      "description": "[BARELY NEW] most extensions block 'game' in the url.",
+      "tags": ["collection"],
+      "blockedBy": [],
+      "verified": false
     }
+        {
+      "title": "kiwk",
+      "url": "https://kiwi.at.it/",
+      "description": "[BARELY NEW] pretty sick!",
+      "tags": ["collection"],
+      "blockedBy": [],
+      "verified": false
+    },
   ]
 }
