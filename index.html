@@ -223,6 +223,35 @@
   </footer>
 
   <script>
+    // Fallback data (used when opened as a local file)
+    const FALLBACK = {
+      "siteTitle": "Unblocked",
+      "siteDescription": "Game links",
+      "links": [
+        {
+          "title": "Daknux",
+          "url": "https://daknux.github.io/",
+          "description": "Collection of unblocked games.",
+          "tags": ["collection"],
+          "blockedBy": []
+        },
+        {
+          "title": "Christianity Trees",
+          "url": "https://christianitytrees.xishuidata.com/",
+          "description": "Unblocked game site.",
+          "tags": ["collection"],
+          "blockedBy": []
+        },
+        {
+          "title": "TTBest",
+          "url": "https://ttbest.s3.amazonaws.com/index.html",
+          "description": "S3 hosted unblocked games.",
+          "tags": ["collection"],
+          "blockedBy": []
+        }
+      ]
+    };
+
     let links = [];
     let activeTag = "all";
 
@@ -231,18 +260,23 @@
     const qEl = document.getElementById("q");
     const countEl = document.getElementById("count");
 
+    function applyData(data) {
+      document.title = data.siteTitle || "Unblocked";
+      document.querySelector(".logo").textContent = data.siteTitle || "Unblocked";
+      links = data.links || [];
+      buildTags();
+      render();
+    }
+
     async function load() {
       try {
         const res = await fetch("config.json?t=" + Date.now());
         if (!res.ok) throw new Error("failed");
         const data = await res.json();
-        document.title = data.siteTitle || "Unblocked";
-        document.querySelector(".logo").textContent = data.siteTitle || "Unblocked";
-        links = data.links || [];
-        buildTags();
-        render();
+        applyData(data);
       } catch (e) {
-        listEl.innerHTML = `<div class="empty">Could not load config.json</div>`;
+        // Works when opened as a local file (file://)
+        applyData(FALLBACK);
       }
     }
 
