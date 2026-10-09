@@ -1,3 +1,4 @@
+
 {
   "siteTitle": "Unblocked",
   "siteDescription": "Game links",
@@ -19,9 +20,9 @@
     {
       "title": "TTBest",
       "url": "https://ttbest.s3.amazonaws.com/index.html",
-      "description": "hosted unblocked games.",
+      "description": "S3 hosted unblocked games.",
       "tags": ["collection"],
       "blockedBy": []
-    },
+    }
   ]
 }
