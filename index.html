@@ -5,33 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Unblocked</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      background: #000;
-      color: #eee;
+      background: #050505;
+      color: #e5e5e5;
       min-height: 100vh;
       line-height: 1.5;
     }
 
+    /* Header */
     header {
-      border-bottom: 1px solid #1a1a1a;
-      padding: 1.1rem 1.25rem;
       position: sticky;
       top: 0;
-      background: rgba(0, 0, 0, 0.92);
-      backdrop-filter: blur(8px);
-      z-index: 10;
+      z-index: 20;
+      background: rgba(5, 5, 5, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid #161616;
     }
 
     .header-inner {
-      max-width: 720px;
+      max-width: 680px;
       margin: 0 auto;
+      padding: 1rem 1.25rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -39,97 +37,130 @@
 
     .logo {
       font-weight: 700;
-      font-size: 1.15rem;
-      letter-spacing: -0.03em;
+      font-size: 1.2rem;
+      letter-spacing: -0.04em;
       color: #fff;
       text-decoration: none;
     }
 
     .count {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: #555;
+      font-variant-numeric: tabular-nums;
     }
 
+    /* Main */
     main {
-      max-width: 720px;
+      max-width: 680px;
       margin: 0 auto;
-      padding: 1.75rem 1.25rem 4rem;
+      padding: 1.75rem 1.25rem 5rem;
     }
 
-    .search {
-      margin-bottom: 1.25rem;
+    /* Search */
+    .search-wrap {
+      position: relative;
+      margin-bottom: 1.35rem;
     }
 
-    .search input {
+    .search-wrap svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      stroke: #444;
+      pointer-events: none;
+    }
+
+    .search-wrap input {
       width: 100%;
-      background: #0d0d0d;
-      border: 1px solid #222;
+      background: #0c0c0c;
+      border: 1px solid #1c1c1c;
       color: #fff;
-      padding: 0.75rem 1rem;
+      padding: 0.8rem 1rem 0.8rem 2.6rem;
       font-size: 0.95rem;
-      border-radius: 8px;
+      border-radius: 10px;
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, background 0.15s;
     }
 
-    .search input:focus {
-      border-color: #444;
+    .search-wrap input:focus {
+      border-color: #333;
+      background: #0f0f0f;
     }
 
-    .search input::placeholder {
-      color: #444;
+    .search-wrap input::placeholder {
+      color: #3a3a3a;
     }
 
+    /* Tags */
     .tags {
       display: flex;
       flex-wrap: wrap;
       gap: 0.4rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.6rem;
     }
 
     .tag {
       background: transparent;
-      border: 1px solid #222;
-      color: #666;
-      padding: 0.3rem 0.8rem;
-      font-size: 0.78rem;
+      border: 1px solid #1c1c1c;
+      color: #555;
+      padding: 0.32rem 0.85rem;
+      font-size: 0.76rem;
       border-radius: 999px;
       cursor: pointer;
       transition: all 0.12s;
     }
 
     .tag:hover {
-      border-color: #444;
-      color: #aaa;
+      border-color: #333;
+      color: #999;
     }
 
     .tag.active {
       border-color: #fff;
       color: #fff;
-      background: #111;
+      background: #141414;
     }
 
+    /* Cards */
     .list {
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
+      gap: 0.55rem;
     }
 
     .card {
-      display: block;
+      position: relative;
       background: #0a0a0a;
-      border: 1px solid #1a1a1a;
-      border-radius: 10px;
-      padding: 1.1rem 1.2rem;
-      text-decoration: none;
-      color: inherit;
-      transition: border-color 0.15s, background 0.15s;
+      border: 1px solid #161616;
+      border-radius: 12px;
+      padding: 1.15rem 1.25rem;
       cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, transform 0.12s;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: transparent;
+      transition: background 0.15s;
     }
 
     .card:hover {
-      border-color: #333;
-      background: #0f0f0f;
+      border-color: #2a2a2a;
+      background: #0d0d0d;
+      transform: translateY(-1px);
+    }
+
+    .card:hover::before {
+      background: #fff;
     }
 
     .card-top {
@@ -137,39 +168,54 @@
       justify-content: space-between;
       align-items: center;
       gap: 0.75rem;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.35rem;
     }
 
     .card h2 {
       font-size: 1.05rem;
       font-weight: 600;
       color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    .badges {
+      display: flex;
+      gap: 0.35rem;
+      flex-shrink: 0;
     }
 
     .badge {
-      font-size: 0.68rem;
-      font-weight: 500;
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
-      white-space: nowrap;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 0.18rem 0.5rem;
+      border-radius: 5px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
     }
 
     .badge.verified {
       background: #111;
-      border: 1px solid #2a2a2a;
-      color: #888;
+      border: 1px solid #252525;
+      color: #777;
     }
 
     .badge.unverified {
-      background: #1a1000;
-      border: 1px solid #3a2a00;
-      color: #aa8800;
+      background: #141000;
+      border: 1px solid #2e2400;
+      color: #a08a00;
+    }
+
+    .badge.new {
+      background: #0f0f0f;
+      border: 1px solid #333;
+      color: #ccc;
     }
 
     .card p {
       font-size: 0.875rem;
-      color: #666;
-      margin-bottom: 0.55rem;
+      color: #555;
+      margin-bottom: 0.6rem;
+      line-height: 1.45;
     }
 
     .meta {
@@ -181,42 +227,43 @@
 
     .meta .t {
       font-size: 0.68rem;
-      color: #555;
-      border: 1px solid #1f1f1f;
+      color: #4a4a4a;
+      border: 1px solid #1c1c1c;
       padding: 0.12rem 0.45rem;
       border-radius: 4px;
     }
 
     .blocked {
       font-size: 0.68rem;
-      color: #666;
+      color: #444;
       margin-left: auto;
     }
 
     .blocked span {
-      color: #444;
+      color: #333;
     }
 
     .empty {
       text-align: center;
-      padding: 3.5rem 1rem;
-      color: #444;
+      padding: 4rem 1rem;
+      color: #333;
       font-size: 0.9rem;
     }
 
     footer {
-      border-top: 1px solid #1a1a1a;
+      border-top: 1px solid #161616;
       text-align: center;
-      padding: 1.25rem;
-      font-size: 0.75rem;
-      color: #333;
+      padding: 1.35rem;
+      font-size: 0.72rem;
+      color: #2a2a2a;
     }
 
-    /* Confirm modal */
+    /* Modal */
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -229,32 +276,38 @@
     }
 
     .modal {
-      background: #0d0d0d;
-      border: 1px solid #2a2a2a;
-      border-radius: 12px;
-      padding: 1.5rem;
+      background: #0c0c0c;
+      border: 1px solid #222;
+      border-radius: 14px;
+      padding: 1.6rem;
       width: 100%;
-      max-width: 360px;
+      max-width: 340px;
       text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     }
 
     .modal h3 {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 600;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.45rem;
       color: #fff;
+      letter-spacing: -0.02em;
     }
 
     .modal p {
       font-size: 0.875rem;
-      color: #777;
-      margin-bottom: 1.25rem;
-      line-height: 1.45;
+      color: #666;
+      margin-bottom: 1.4rem;
+      line-height: 1.5;
     }
 
     .modal .site-name {
-      color: #aaa;
+      display: block;
+      margin-top: 0.35rem;
+      color: #999;
       font-weight: 500;
+      font-size: 0.8rem;
+      word-break: break-all;
     }
 
     .modal-actions {
@@ -264,23 +317,23 @@
 
     .modal-actions button {
       flex: 1;
-      padding: 0.65rem;
+      padding: 0.7rem;
       font-size: 0.875rem;
-      font-weight: 500;
-      border-radius: 8px;
+      font-weight: 550;
+      border-radius: 9px;
       cursor: pointer;
-      border: 1px solid #2a2a2a;
-      transition: background 0.12s, border-color 0.12s;
+      border: 1px solid #252525;
+      transition: all 0.12s;
     }
 
     .btn-cancel {
       background: transparent;
-      color: #888;
+      color: #777;
     }
 
     .btn-cancel:hover {
-      background: #151515;
-      border-color: #444;
+      background: #141414;
+      border-color: #333;
       color: #ccc;
     }
 
@@ -291,14 +344,14 @@
     }
 
     .btn-confirm:hover {
-      background: #ddd;
+      background: #e0e0e0;
     }
 
     @media (max-width: 500px) {
       .card-top {
         flex-direction: column;
         align-items: flex-start;
-        gap: 0.3rem;
+        gap: 0.4rem;
       }
     }
   </style>
@@ -312,8 +365,11 @@
   </header>
 
   <main>
-    <div class="search">
-      <input type="text" id="q" placeholder="Search..." autocomplete="off" />
+    <div class="search-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+      </svg>
+      <input type="text" id="q" placeholder="Search sites..." autocomplete="off" />
     </div>
 
     <div class="tags" id="tags"></div>
@@ -327,12 +383,13 @@
     Edit config.json to add or update links
   </footer>
 
-  <!-- Confirm modal -->
   <div class="overlay" id="overlay">
     <div class="modal">
       <h3>Are you sure?</h3>
-      <p>This site is <strong>unverified</strong>.<br>
-        <span class="site-name" id="modalSite"></span></p>
+      <p>
+        This site is <strong>unverified</strong>.
+        <span class="site-name" id="modalSite"></span>
+      </p>
       <div class="modal-actions">
         <button class="btn-cancel" id="btnCancel">Cancel</button>
         <button class="btn-confirm" id="btnConfirm">Open anyway</button>
@@ -368,6 +425,24 @@
           "tags": ["collection"],
           "blockedBy": [],
           "verified": true
+        },
+        {
+          "title": "games",
+          "url": "https://gamebackup.github.io",
+          "description": "Most extensions block 'game' in the url.",
+          "tags": ["collection", "new"],
+          "blockedBy": [],
+          "verified": false,
+          "new": true
+        },
+        {
+          "title": "kiwk",
+          "url": "https://kiwi.at.it/",
+          "description": "Pretty sick!",
+          "tags": ["collection", "new"],
+          "blockedBy": [],
+          "verified": false,
+          "new": true
         }
       ]
     };
@@ -397,8 +472,7 @@
       try {
         const res = await fetch("config.json?t=" + Date.now());
         if (!res.ok) throw new Error("failed");
-        const data = await res.json();
-        applyData(data);
+        applyData(await res.json());
       } catch (e) {
         applyData(FALLBACK);
       }
@@ -444,12 +518,8 @@
       if (pendingUrl) window.open(pendingUrl, "_blank", "noopener");
       closeModal();
     };
-    overlay.onclick = (e) => {
-      if (e.target === overlay) closeModal();
-    };
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeModal();
-    });
+    overlay.onclick = e => { if (e.target === overlay) closeModal(); };
+    document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
 
     function render() {
       const q = qEl.value.trim().toLowerCase();
@@ -463,7 +533,7 @@
         return tagOk && searchOk;
       });
 
-      countEl.textContent = filtered.length + " link" + (filtered.length !== 1 ? "s" : "");
+      countEl.textContent = filtered.length + " site" + (filtered.length !== 1 ? "s" : "");
 
       if (!filtered.length) {
         listEl.innerHTML = `<div class="empty">No results</div>`;
@@ -472,7 +542,11 @@
 
       listEl.innerHTML = filtered.map((l, i) => {
         const isVerified = !!l.verified;
-        const badge = isVerified
+        const isNew = !!l.new || (l.tags || []).includes("new");
+
+        let badges = "";
+        if (isNew) badges += `<span class="badge new">new</span>`;
+        badges += isVerified
           ? `<span class="badge verified">verified</span>`
           : `<span class="badge unverified">unverified</span>`;
 
@@ -484,11 +558,11 @@
           <div class="card" data-i="${i}">
             <div class="card-top">
               <h2>${esc(l.title)}</h2>
-              ${badge}
+              <div class="badges">${badges}</div>
             </div>
             <p>${esc(l.description || "")}</p>
             <div class="meta">
-              ${(l.tags || []).map(t => `<span class="t">${esc(t)}</span>`).join("")}
+              ${(l.tags || []).filter(t => t !== "new").map(t => `<span class="t">${esc(t)}</span>`).join("")}
               ${blocked}
             </div>
           </div>
