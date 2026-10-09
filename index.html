@@ -14,46 +14,46 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
       background: #000;
-      color: #fff;
+      color: #eee;
       min-height: 100vh;
-      line-height: 1.45;
+      line-height: 1.5;
     }
 
     header {
-      border-bottom: 1px solid #222;
-      padding: 1rem 1.25rem;
+      border-bottom: 1px solid #1a1a1a;
+      padding: 1.1rem 1.25rem;
       position: sticky;
       top: 0;
-      background: #000;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(8px);
       z-index: 10;
     }
 
     .header-inner {
-      max-width: 960px;
+      max-width: 720px;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
     }
 
     .logo {
       font-weight: 700;
-      font-size: 1.1rem;
-      letter-spacing: -0.02em;
+      font-size: 1.15rem;
+      letter-spacing: -0.03em;
       color: #fff;
       text-decoration: none;
     }
 
     .count {
       font-size: 0.8rem;
-      color: #666;
+      color: #555;
     }
 
     main {
-      max-width: 960px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 1.5rem 1.25rem 3rem;
+      padding: 1.75rem 1.25rem 4rem;
     }
 
     .search {
@@ -62,21 +62,22 @@
 
     .search input {
       width: 100%;
-      background: #111;
-      border: 1px solid #333;
+      background: #0d0d0d;
+      border: 1px solid #222;
       color: #fff;
-      padding: 0.65rem 0.9rem;
+      padding: 0.75rem 1rem;
       font-size: 0.95rem;
-      border-radius: 6px;
+      border-radius: 8px;
       outline: none;
+      transition: border-color 0.15s;
     }
 
     .search input:focus {
-      border-color: #555;
+      border-color: #444;
     }
 
     .search input::placeholder {
-      color: #555;
+      color: #444;
     }
 
     .tags {
@@ -88,67 +89,87 @@
 
     .tag {
       background: transparent;
-      border: 1px solid #333;
-      color: #888;
-      padding: 0.25rem 0.7rem;
-      font-size: 0.8rem;
+      border: 1px solid #222;
+      color: #666;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.78rem;
       border-radius: 999px;
       cursor: pointer;
+      transition: all 0.12s;
     }
 
-    .tag:hover,
+    .tag:hover {
+      border-color: #444;
+      color: #aaa;
+    }
+
     .tag.active {
       border-color: #fff;
       color: #fff;
+      background: #111;
     }
 
     .list {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.6rem;
     }
 
     .card {
       display: block;
       background: #0a0a0a;
-      border: 1px solid #222;
-      border-radius: 8px;
-      padding: 1rem 1.1rem;
+      border: 1px solid #1a1a1a;
+      border-radius: 10px;
+      padding: 1.1rem 1.2rem;
       text-decoration: none;
       color: inherit;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, background 0.15s;
+      cursor: pointer;
     }
 
     .card:hover {
-      border-color: #444;
+      border-color: #333;
+      background: #0f0f0f;
     }
 
     .card-top {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
       gap: 0.75rem;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.3rem;
     }
 
     .card h2 {
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 600;
+      color: #fff;
     }
 
-    .card .url {
-      font-size: 0.75rem;
-      color: #555;
+    .badge {
+      font-size: 0.68rem;
+      font-weight: 500;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 45%;
+    }
+
+    .badge.verified {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      color: #888;
+    }
+
+    .badge.unverified {
+      background: #1a1000;
+      border: 1px solid #3a2a00;
+      color: #aa8800;
     }
 
     .card p {
       font-size: 0.875rem;
-      color: #888;
-      margin-bottom: 0.5rem;
+      color: #666;
+      margin-bottom: 0.55rem;
     }
 
     .meta {
@@ -159,41 +180,125 @@
     }
 
     .meta .t {
-      font-size: 0.7rem;
-      color: #666;
-      border: 1px solid #2a2a2a;
-      padding: 0.1rem 0.45rem;
+      font-size: 0.68rem;
+      color: #555;
+      border: 1px solid #1f1f1f;
+      padding: 0.12rem 0.45rem;
       border-radius: 4px;
     }
 
     .blocked {
-      font-size: 0.7rem;
-      color: #999;
+      font-size: 0.68rem;
+      color: #666;
       margin-left: auto;
     }
 
     .blocked span {
-      color: #666;
+      color: #444;
     }
 
     .empty {
       text-align: center;
-      padding: 3rem 1rem;
-      color: #555;
+      padding: 3.5rem 1rem;
+      color: #444;
       font-size: 0.9rem;
     }
 
     footer {
-      border-top: 1px solid #222;
+      border-top: 1px solid #1a1a1a;
       text-align: center;
       padding: 1.25rem;
       font-size: 0.75rem;
-      color: #444;
+      color: #333;
+    }
+
+    /* Confirm modal */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 1rem;
+    }
+
+    .overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #0d0d0d;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+    }
+
+    .modal h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #fff;
+    }
+
+    .modal p {
+      font-size: 0.875rem;
+      color: #777;
+      margin-bottom: 1.25rem;
+      line-height: 1.45;
+    }
+
+    .modal .site-name {
+      color: #aaa;
+      font-weight: 500;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .modal-actions button {
+      flex: 1;
+      padding: 0.65rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid #2a2a2a;
+      transition: background 0.12s, border-color 0.12s;
+    }
+
+    .btn-cancel {
+      background: transparent;
+      color: #888;
+    }
+
+    .btn-cancel:hover {
+      background: #151515;
+      border-color: #444;
+      color: #ccc;
+    }
+
+    .btn-confirm {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+
+    .btn-confirm:hover {
+      background: #ddd;
     }
 
     @media (max-width: 500px) {
-      .card .url {
-        display: none;
+      .card-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
       }
     }
   </style>
@@ -222,8 +327,20 @@
     Edit config.json to add or update links
   </footer>
 
+  <!-- Confirm modal -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h3>Are you sure?</h3>
+      <p>This site is <strong>unverified</strong>.<br>
+        <span class="site-name" id="modalSite"></span></p>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="btnCancel">Cancel</button>
+        <button class="btn-confirm" id="btnConfirm">Open anyway</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Fallback data (used when opened as a local file)
     const FALLBACK = {
       "siteTitle": "Unblocked",
       "siteDescription": "Game links",
@@ -233,32 +350,40 @@
           "url": "https://daknux.github.io/",
           "description": "Collection of unblocked games.",
           "tags": ["collection"],
-          "blockedBy": []
+          "blockedBy": [],
+          "verified": true
         },
         {
           "title": "Christianity Trees",
           "url": "https://christianitytrees.xishuidata.com/",
           "description": "Unblocked game site.",
           "tags": ["collection"],
-          "blockedBy": []
+          "blockedBy": [],
+          "verified": true
         },
         {
           "title": "TTBest",
           "url": "https://ttbest.s3.amazonaws.com/index.html",
           "description": "S3 hosted unblocked games.",
           "tags": ["collection"],
-          "blockedBy": []
+          "blockedBy": [],
+          "verified": true
         }
       ]
     };
 
     let links = [];
     let activeTag = "all";
+    let pendingUrl = null;
 
     const listEl = document.getElementById("list");
     const tagsEl = document.getElementById("tags");
     const qEl = document.getElementById("q");
     const countEl = document.getElementById("count");
+    const overlay = document.getElementById("overlay");
+    const modalSite = document.getElementById("modalSite");
+    const btnCancel = document.getElementById("btnCancel");
+    const btnConfirm = document.getElementById("btnConfirm");
 
     function applyData(data) {
       document.title = data.siteTitle || "Unblocked";
@@ -275,7 +400,6 @@
         const data = await res.json();
         applyData(data);
       } catch (e) {
-        // Works when opened as a local file (file://)
         applyData(FALLBACK);
       }
     }
@@ -300,6 +424,33 @@
       });
     }
 
+    function openLink(url, title, verified) {
+      if (verified) {
+        window.open(url, "_blank", "noopener");
+        return;
+      }
+      pendingUrl = url;
+      modalSite.textContent = title + " — " + url.replace(/^https?:\/\//, "");
+      overlay.classList.add("open");
+    }
+
+    function closeModal() {
+      overlay.classList.remove("open");
+      pendingUrl = null;
+    }
+
+    btnCancel.onclick = closeModal;
+    btnConfirm.onclick = () => {
+      if (pendingUrl) window.open(pendingUrl, "_blank", "noopener");
+      closeModal();
+    };
+    overlay.onclick = (e) => {
+      if (e.target === overlay) closeModal();
+    };
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeModal();
+    });
+
     function render() {
       const q = qEl.value.trim().toLowerCase();
 
@@ -319,25 +470,37 @@
         return;
       }
 
-      listEl.innerHTML = filtered.map(l => {
+      listEl.innerHTML = filtered.map((l, i) => {
+        const isVerified = !!l.verified;
+        const badge = isVerified
+          ? `<span class="badge verified">verified</span>`
+          : `<span class="badge unverified">unverified</span>`;
+
         const blocked = (l.blockedBy && l.blockedBy.length)
           ? `<div class="blocked">blocked by <span>${esc(l.blockedBy.join(", "))}</span></div>`
           : "";
 
         return `
-          <a class="card" href="${esc(l.url)}" target="_blank" rel="noopener">
+          <div class="card" data-i="${i}">
             <div class="card-top">
               <h2>${esc(l.title)}</h2>
-              <span class="url">${esc(l.url.replace(/^https?:\/\//, ""))}</span>
+              ${badge}
             </div>
             <p>${esc(l.description || "")}</p>
             <div class="meta">
               ${(l.tags || []).map(t => `<span class="t">${esc(t)}</span>`).join("")}
               ${blocked}
             </div>
-          </a>
+          </div>
         `;
       }).join("");
+
+      listEl.querySelectorAll(".card").forEach(card => {
+        card.onclick = () => {
+          const l = filtered[parseInt(card.dataset.i, 10)];
+          openLink(l.url, l.title, !!l.verified);
+        };
+      });
     }
 
     function esc(s) {
