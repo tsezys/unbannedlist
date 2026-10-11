@@ -1,46 +1,46 @@
 {
-  "siteTitle": "Unblocked",
-  "siteDescription": "Game links",
+  "siteTitle": "Unbanned",
+  "siteDescription": "Web-links",
   "links": [
     {
       "title": "Daknux",
       "url": "https://daknux.github.io/",
-      "description": "Collection of unblocked games.",
+      "description": "A collection of unblocked games.",
       "tags": ["collection"],
-      "blockedBy": [],
+      "blockedBy": ["None"],
       "verified": true
     },
     {
       "title": "Christianity Trees",
       "url": "https://christianitytrees.xishuidata.com/",
-      "description": "Unblocked game site.",
+      "description": "An unblocked game site.",
       "tags": ["collection"],
-      "blockedBy": [],
+      "blockedBy": ["None"],
       "verified": true
     },
     {
       "title": "TTBest",
       "url": "https://ttbest.s3.amazonaws.com/index.html",
-      "description": "S3 hosted unblocked games.",
+      "description": "Unblocked games hosted on Amazon S3.",
       "tags": ["collection"],
-      "blockedBy": [],
+      "blockedBy": ["None"],
       "verified": true
     },
     {
       "title": "games",
       "url": "https://gamebackup.github.io",
-      "description": "Most extensions block 'game' in the url.",
+      "description": "May be blocked by None due to the word “game” in the URL.",
       "tags": ["collection", "new"],
-      "blockedBy": [],
+      "blockedBy": ["None"],
       "verified": false,
       "new": true
     },
     {
       "title": "kiwk",
       "url": "https://kiwi.at.it/",
-      "description": "Pretty sick!",
+      "description": "A collection of games.",
       "tags": ["collection", "new"],
-      "blockedBy": [],
+      "blockedBy": ["None"],
       "verified": false,
       "new": true
     }
