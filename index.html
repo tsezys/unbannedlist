@@ -1,274 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Unblocked</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090c14">
+  <title>Unbannedlist</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      color-scheme: dark;
+      --background: #090c14;
+      --surface: #111827;
+      --surface-hover: #172033;
+      --border: #263149;
+      --text: #eef2ff;
+      --muted: #9aa8c2;
+      --accent: #a5b4fc;
+      --accent-strong: #c7d2fe;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      background: #050505;
-      color: #e5e5e5;
       min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 50% -20%, rgba(72, 91, 170, 0.3), transparent 55%),
+        var(--background);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.5;
     }
 
-    /* Header */
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
     header {
       position: sticky;
       top: 0;
-      z-index: 20;
-      background: rgba(5, 5, 5, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid #161616;
+      z-index: 10;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(9, 12, 20, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
 
     .header-inner {
-      max-width: 680px;
+      width: min(100% - 40px, 760px);
+      min-height: 72px;
       margin: 0 auto;
-      padding: 1rem 1.25rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 1rem;
     }
 
     .logo {
-      font-weight: 700;
+      color: var(--text);
       font-size: 1.2rem;
-      letter-spacing: -0.04em;
-      color: #fff;
+      font-weight: 750;
+      letter-spacing: -0.045em;
       text-decoration: none;
     }
 
     .count {
-      font-size: 0.78rem;
-      color: #555;
+      color: var(--muted);
+      font-size: 0.82rem;
       font-variant-numeric: tabular-nums;
     }
 
-    /* Main */
     main {
-      max-width: 680px;
+      width: min(100% - 40px, 760px);
+      min-height: calc(100vh - 140px);
       margin: 0 auto;
-      padding: 1.75rem 1.25rem 5rem;
+      padding: 2.5rem 0 5rem;
     }
 
-    /* Search */
+    .intro {
+      margin-bottom: 1.75rem;
+    }
+
+    .eyebrow {
+      margin-bottom: 0.45rem;
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .intro h1 {
+      margin-bottom: 0.45rem;
+      font-size: clamp(1.8rem, 5vw, 2.4rem);
+      letter-spacing: -0.06em;
+      line-height: 1.1;
+    }
+
+    .intro p {
+      max-width: 540px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
     .search-wrap {
       position: relative;
-      margin-bottom: 1.35rem;
+      margin-bottom: 1rem;
     }
 
     .search-wrap svg {
       position: absolute;
-      left: 14px;
       top: 50%;
+      left: 16px;
+      width: 18px;
+      height: 18px;
       transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      stroke: #444;
+      stroke: #8794ae;
       pointer-events: none;
     }
 
     .search-wrap input {
       width: 100%;
-      background: #0c0c0c;
-      border: 1px solid #1c1c1c;
-      color: #fff;
-      padding: 0.8rem 1rem 0.8rem 2.6rem;
-      font-size: 0.95rem;
-      border-radius: 10px;
+      padding: 0.95rem 1rem 0.95rem 2.9rem;
+      border: 1px solid var(--border);
+      border-radius: 14px;
       outline: none;
-      transition: border-color 0.15s, background 0.15s;
-    }
-
-    .search-wrap input:focus {
-      border-color: #333;
-      background: #0f0f0f;
+      background: rgba(17, 24, 39, 0.85);
+      color: var(--text);
+      transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
     }
 
     .search-wrap input::placeholder {
-      color: #3a3a3a;
+      color: #77839b;
     }
 
-    /* Tags */
+    .search-wrap input:focus {
+      border-color: #818cf8;
+      background: var(--surface);
+      box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.14);
+    }
+
     .tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-bottom: 1.6rem;
+      gap: 0.5rem;
+      margin-bottom: 1.35rem;
     }
 
     .tag {
-      background: transparent;
-      border: 1px solid #1c1c1c;
-      color: #555;
-      padding: 0.32rem 0.85rem;
-      font-size: 0.76rem;
+      padding: 0.42rem 0.85rem;
+      border: 1px solid var(--border);
       border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
       cursor: pointer;
-      transition: all 0.12s;
+      font-size: 0.79rem;
+      transition: 160ms ease;
     }
 
     .tag:hover {
-      border-color: #333;
-      color: #999;
+      border-color: #69789a;
+      color: var(--text);
     }
 
     .tag.active {
-      border-color: #fff;
-      color: #fff;
-      background: #141414;
+      border-color: rgba(165, 180, 252, 0.55);
+      background: rgba(129, 140, 248, 0.16);
+      color: var(--accent-strong);
     }
 
-    /* Cards */
     .list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
+      display: grid;
+      gap: 0.8rem;
     }
 
     .card {
       position: relative;
-      background: #0a0a0a;
-      border: 1px solid #161616;
-      border-radius: 12px;
-      padding: 1.15rem 1.25rem;
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s, transform 0.12s;
       overflow: hidden;
+      padding: 1.2rem 1.3rem;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(17, 24, 39, 0.82);
+      cursor: pointer;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
     }
 
     .card::before {
-      content: "";
       position: absolute;
-      left: 0;
       top: 0;
       bottom: 0;
-      width: 2px;
+      left: 0;
+      width: 3px;
       background: transparent;
-      transition: background 0.15s;
+      content: "";
+      transition: background 160ms ease;
     }
 
     .card:hover {
-      border-color: #2a2a2a;
-      background: #0d0d0d;
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      border-color: #485778;
+      background: var(--surface-hover);
     }
 
     .card:hover::before {
-      background: #fff;
+      background: var(--accent);
+    }
+
+    .card:focus-visible,
+    button:focus-visible {
+      outline: 3px solid rgba(165, 180, 252, 0.75);
+      outline-offset: 3px;
     }
 
     .card-top {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.35rem;
+      justify-content: space-between;
+      gap: 0.8rem;
+      margin-bottom: 0.4rem;
     }
 
     .card h2 {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #fff;
+      color: var(--text);
+      font-size: 1.02rem;
+      font-weight: 650;
       letter-spacing: -0.02em;
     }
 
     .badges {
       display: flex;
-      gap: 0.35rem;
       flex-shrink: 0;
+      gap: 0.4rem;
     }
 
     .badge {
-      font-size: 0.65rem;
-      font-weight: 600;
-      padding: 0.18rem 0.5rem;
-      border-radius: 5px;
-      letter-spacing: 0.02em;
+      padding: 0.2rem 0.55rem;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
     }
 
     .badge.verified {
-      background: #111;
-      border: 1px solid #252525;
-      color: #777;
+      border-color: #285447;
+      background: #10281f;
+      color: #9ae6c3;
     }
 
     .badge.unverified {
-      background: #141000;
-      border: 1px solid #2e2400;
-      color: #a08a00;
+      border-color: #604b25;
+      background: #2a2112;
+      color: #f6cf83;
     }
 
     .badge.new {
-      background: #0f0f0f;
-      border: 1px solid #333;
-      color: #ccc;
+      border-color: #394672;
+      background: #1a2140;
+      color: #c0cbff;
     }
 
     .card p {
-      font-size: 0.875rem;
-      color: #555;
-      margin-bottom: 0.6rem;
-      line-height: 1.45;
+      margin-bottom: 0.85rem;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.55;
     }
 
     .meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.35rem;
       align-items: center;
+      gap: 0.4rem;
     }
 
     .meta .t {
-      font-size: 0.68rem;
-      color: #4a4a4a;
-      border: 1px solid #1c1c1c;
-      padding: 0.12rem 0.45rem;
-      border-radius: 4px;
+      padding: 0.16rem 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: #b2bfd6;
+      font-size: 0.7rem;
     }
 
     .blocked {
-      font-size: 0.68rem;
-      color: #444;
       margin-left: auto;
-    }
-
-    .blocked span {
-      color: #333;
+      color: #8794ae;
+      font-size: 0.72rem;
     }
 
     .empty {
+      padding: 3.5rem 1rem;
+      color: var(--muted);
       text-align: center;
-      padding: 4rem 1rem;
-      color: #333;
-      font-size: 0.9rem;
     }
 
     footer {
-      border-top: 1px solid #161616;
+      padding: 1.3rem 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: #77839b;
+      font-size: 0.76rem;
       text-align: center;
-      padding: 1.35rem;
-      font-size: 0.72rem;
-      color: #2a2a2a;
     }
 
-    /* Modal */
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(4px);
+      z-index: 100;
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 100;
       padding: 1rem;
+      background: rgba(3, 5, 10, 0.78);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .overlay.open {
@@ -276,82 +328,141 @@
     }
 
     .modal {
-      background: #0c0c0c;
-      border: 1px solid #222;
-      border-radius: 14px;
-      padding: 1.6rem;
-      width: 100%;
-      max-width: 340px;
+      width: min(100%, 430px);
+      padding: 1.7rem;
+      border: 1px solid #2b354b;
+      border-radius: 20px;
+      background: #111827;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.48);
       text-align: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      animation: modal-in 180ms ease-out;
     }
 
-    .modal h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 0.45rem;
-      color: #fff;
-      letter-spacing: -0.02em;
+    @keyframes modal-in {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .notice-icon {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 1rem;
+      place-items: center;
+      border: 1px solid #604b25;
+      border-radius: 16px;
+      background: #2a2112;
+      color: #f6cf83;
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .modal h2 {
+      margin-bottom: 0.55rem;
+      color: var(--text);
+      font-size: 1.25rem;
+      letter-spacing: -0.025em;
     }
 
     .modal p {
-      font-size: 0.875rem;
-      color: #666;
       margin-bottom: 1.4rem;
-      line-height: 1.5;
+      color: var(--muted);
+      font-size: 0.91rem;
+      line-height: 1.6;
     }
 
-    .modal .site-name {
+    .modal p strong {
+      color: var(--text);
+    }
+
+    .site-name {
       display: block;
-      margin-top: 0.35rem;
-      color: #999;
-      font-weight: 500;
+      margin-top: 0.5rem;
+      color: #c0cbff;
       font-size: 0.8rem;
-      word-break: break-all;
+      overflow-wrap: anywhere;
     }
 
     .modal-actions {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.65rem;
     }
 
     .modal-actions button {
+      min-height: 46px;
       flex: 1;
-      padding: 0.7rem;
-      font-size: 0.875rem;
-      font-weight: 550;
-      border-radius: 9px;
+      padding: 0.7rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
       cursor: pointer;
-      border: 1px solid #252525;
-      transition: all 0.12s;
+      font-size: 0.88rem;
+      font-weight: 650;
+      transition: 160ms ease;
     }
 
-    .btn-cancel {
-      background: transparent;
-      color: #777;
+    .btn-secondary {
+      background: #151d2d;
+      color: var(--text);
     }
 
-    .btn-cancel:hover {
-      background: #141414;
-      border-color: #333;
-      color: #ccc;
+    .btn-secondary:hover {
+      border-color: #53617c;
+      background: #1b263a;
     }
 
-    .btn-confirm {
-      background: #fff;
-      color: #000;
-      border-color: #fff;
+    .btn-primary {
+      border-color: #a5b4fc !important;
+      background: var(--accent);
+      color: #101426;
     }
 
-    .btn-confirm:hover {
-      background: #e0e0e0;
+    .btn-primary:hover {
+      background: #c7d2fe;
     }
 
-    @media (max-width: 500px) {
+    @media (max-width: 520px) {
+      .header-inner,
+      main {
+        width: min(100% - 32px, 760px);
+      }
+
+      main {
+        padding-top: 1.8rem;
+      }
+
+      .card {
+        padding: 1.05rem;
+      }
+
       .card-top {
-        flex-direction: column;
         align-items: flex-start;
-        gap: 0.4rem;
+        flex-direction: column;
+        gap: 0.55rem;
+      }
+
+      .blocked {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .modal {
+        padding: 1.35rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
       }
     }
   </style>
@@ -359,90 +470,110 @@
 <body>
   <header>
     <div class="header-inner">
-      <a href="/" class="logo">Unblocked</a>
+      <a href="/" class="logo">Unbannedlist</a>
       <span class="count" id="count"></span>
     </div>
   </header>
 
   <main>
+    <section class="intro">
+      <div class="eyebrow">Link directory</div>
+      <h1>Find your next favorite.</h1>
+      <p>Search the list or choose a tag to find a site.</p>
+    </section>
+
     <div class="search-wrap">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"></path>
       </svg>
-      <input type="text" id="q" placeholder="Search sites..." autocomplete="off" />
+      <input type="search" id="q" placeholder="Search sites..." autocomplete="off" aria-label="Search sites">
     </div>
 
-    <div class="tags" id="tags"></div>
+    <div class="tags" id="tags" aria-label="Filter by tag"></div>
 
-    <div class="list" id="list">
-      <div class="empty">Loading...</div>
+    <div class="list" id="list" aria-live="polite">
+      <div class="empty">Loading sites…</div>
     </div>
   </main>
 
-  <footer>
-    Edit config.json to add or update links
-  </footer>
+  <footer>Edit config.json to add or update links.</footer>
 
-  <div class="overlay" id="overlay">
-    <div class="modal">
-      <h3>Are you sure?</h3>
-      <p>
-        This site is <strong>unverified</strong>.
+  <div class="overlay" id="noticeOverlay">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="noticeTitle" aria-describedby="noticeMessage">
+      <div class="notice-icon" aria-hidden="true">!</div>
+      <h2 id="noticeTitle">NOTICE</h2>
+      <p id="noticeMessage">
+        This site is only for districts that use <strong>ContentKeeper</strong>.
+        Other school-blocking extensions aren’t supported. Thank you.
+      </p>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="backToGoogle" type="button">Back to Google</button>
+        <button class="btn-primary" id="continueButton" type="button">Continue</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="overlay" id="unverifiedOverlay">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="unverifiedTitle" aria-describedby="unverifiedMessage">
+      <div class="notice-icon" aria-hidden="true">!</div>
+      <h2 id="unverifiedTitle">Unverified site</h2>
+      <p id="unverifiedMessage">
+        This site hasn’t been verified. Only continue if you trust it.
         <span class="site-name" id="modalSite"></span>
       </p>
       <div class="modal-actions">
-        <button class="btn-cancel" id="btnCancel">Cancel</button>
-        <button class="btn-confirm" id="btnConfirm">Open anyway</button>
+        <button class="btn-secondary" id="btnCancel" type="button">Cancel</button>
+        <button class="btn-primary" id="btnConfirm" type="button">Open site</button>
       </div>
-    </div>
+    </section>
   </div>
 
   <script>
     const FALLBACK = {
-      "siteTitle": "Unblocked",
-      "siteDescription": "Game links",
-      "links": [
+      siteTitle: "Unbannedlist",
+      siteDescription: "Game links",
+      links: [
         {
-          "title": "Daknux",
-          "url": "https://daknux.github.io/",
-          "description": "Collection of unblocked games.",
-          "tags": ["collection"],
-          "blockedBy": [],
-          "verified": true
+          title: "Daknux",
+          url: "https://daknux.github.io/",
+          description: "Collection of unblocked games.",
+          tags: ["collection"],
+          blockedBy: [],
+          verified: true
         },
         {
-          "title": "Christianity Trees",
-          "url": "https://christianitytrees.xishuidata.com/",
-          "description": "Unblocked game site.",
-          "tags": ["collection"],
-          "blockedBy": [],
-          "verified": true
+          title: "Christianity Trees",
+          url: "https://christianitytrees.xishuidata.com/",
+          description: "Unblocked game site.",
+          tags: ["collection"],
+          blockedBy: [],
+          verified: true
         },
         {
-          "title": "TTBest",
-          "url": "https://ttbest.s3.amazonaws.com/index.html",
-          "description": "S3 hosted unblocked games.",
-          "tags": ["collection"],
-          "blockedBy": [],
-          "verified": true
+          title: "TTBest",
+          url: "https://ttbest.s3.amazonaws.com/index.html",
+          description: "S3-hosted games.",
+          tags: ["collection"],
+          blockedBy: [],
+          verified: true
         },
         {
-          "title": "games",
-          "url": "https://gamebackup.github.io",
-          "description": "Most extensions block 'game' in the url.",
-          "tags": ["collection", "new"],
-          "blockedBy": [],
-          "verified": false,
-          "new": true
+          title: "games",
+          url: "https://gamebackup.github.io",
+          description: "A collection of games.",
+          tags: ["collection", "new"],
+          blockedBy: [],
+          verified: false,
+          new: true
         },
         {
-          "title": "kiwk",
-          "url": "https://kiwi.at.it/",
-          "description": "Pretty sick!",
-          "tags": ["collection", "new"],
-          "blockedBy": [],
-          "verified": false,
-          "new": true
+          title: "kiwk",
+          url: "https://kiwi.at.it/",
+          description: "A game collection.",
+          tags: ["collection", "new"],
+          blockedBy: [],
+          verified: false,
+          new: true
         }
       ]
     };
@@ -455,137 +586,188 @@
     const tagsEl = document.getElementById("tags");
     const qEl = document.getElementById("q");
     const countEl = document.getElementById("count");
-    const overlay = document.getElementById("overlay");
+    const noticeOverlay = document.getElementById("noticeOverlay");
+    const unverifiedOverlay = document.getElementById("unverifiedOverlay");
     const modalSite = document.getElementById("modalSite");
     const btnCancel = document.getElementById("btnCancel");
     const btnConfirm = document.getElementById("btnConfirm");
+    const continueButton = document.getElementById("continueButton");
+    const backToGoogle = document.getElementById("backToGoogle");
+
+    function esc(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
     function applyData(data) {
-      document.title = data.siteTitle || "Unblocked";
-      document.querySelector(".logo").textContent = data.siteTitle || "Unblocked";
-      links = data.links || [];
+      const siteTitle = data.siteTitle || "Unbannedlist";
+      document.title = siteTitle;
+      document.querySelector(".logo").textContent = siteTitle;
+      links = Array.isArray(data.links) ? data.links : [];
       buildTags();
       render();
     }
 
     async function load() {
       try {
-        const res = await fetch("config.json?t=" + Date.now());
-        if (!res.ok) throw new Error("failed");
-        applyData(await res.json());
-      } catch (e) {
+        const response = await fetch("config.json?t=" + Date.now());
+        if (!response.ok) throw new Error("Could not load config");
+        applyData(await response.json());
+      } catch {
         applyData(FALLBACK);
       }
     }
 
     function buildTags() {
-      const set = new Set();
-      links.forEach(l => (l.tags || []).forEach(t => set.add(t)));
-      const all = ["all", ...Array.from(set).sort()];
+      const tagSet = new Set();
 
-      tagsEl.innerHTML = all.map(t => {
-        const label = t === "all" ? "All" : t;
-        return `<button class="tag ${t === activeTag ? "active" : ""}" data-t="${t}">${label}</button>`;
+      links.forEach(link => {
+        (link.tags || []).forEach(tag => tagSet.add(tag));
+      });
+
+      const allTags = ["all", ...Array.from(tagSet).sort()];
+
+      tagsEl.innerHTML = allTags.map(tag => {
+        const label = tag === "all" ? "All" : tag;
+        const selected = tag === activeTag ? " active" : "";
+        return `<button class="tag${selected}" type="button" data-tag="${esc(tag)}" aria-pressed="${tag === activeTag}">${esc(label)}</button>`;
       }).join("");
 
-      tagsEl.querySelectorAll(".tag").forEach(btn => {
-        btn.onclick = () => {
-          activeTag = btn.dataset.t;
-          tagsEl.querySelectorAll(".tag").forEach(b => b.classList.remove("active"));
-          btn.classList.add("active");
+      tagsEl.querySelectorAll(".tag").forEach(button => {
+        button.addEventListener("click", () => {
+          activeTag = button.dataset.tag;
+          buildTags();
           render();
-        };
+        });
       });
     }
 
     function openLink(url, title, verified) {
       if (verified) {
-        window.open(url, "_blank", "noopener");
+        window.open(url, "_blank", "noopener,noreferrer");
         return;
       }
+
       pendingUrl = url;
-      modalSite.textContent = title + " — " + url.replace(/^https?:\/\//, "");
-      overlay.classList.add("open");
+      modalSite.textContent = `${title} — ${url.replace(/^https?:\/\//, "")}`;
+      unverifiedOverlay.classList.add("open");
+      document.body.classList.add("modal-open");
+      btnCancel.focus();
     }
 
-    function closeModal() {
-      overlay.classList.remove("open");
+    function closeUnverifiedModal() {
+      unverifiedOverlay.classList.remove("open");
+      document.body.classList.remove("modal-open");
       pendingUrl = null;
     }
 
-    btnCancel.onclick = closeModal;
-    btnConfirm.onclick = () => {
-      if (pendingUrl) window.open(pendingUrl, "_blank", "noopener");
-      closeModal();
-    };
-    overlay.onclick = e => { if (e.target === overlay) closeModal(); };
-    document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
-
     function render() {
-      const q = qEl.value.trim().toLowerCase();
+      const query = qEl.value.trim().toLowerCase();
 
-      const filtered = links.filter(l => {
-        const tagOk = activeTag === "all" || (l.tags || []).includes(activeTag);
-        const searchOk = !q ||
-          l.title.toLowerCase().includes(q) ||
-          (l.description || "").toLowerCase().includes(q) ||
-          (l.tags || []).some(t => t.toLowerCase().includes(q));
-        return tagOk && searchOk;
+      const filtered = links.filter(link => {
+        const tags = Array.isArray(link.tags) ? link.tags : [];
+        const tagMatches = activeTag === "all" || tags.includes(activeTag);
+        const searchMatches = !query ||
+          String(link.title || "").toLowerCase().includes(query) ||
+          String(link.description || "").toLowerCase().includes(query) ||
+          tags.some(tag => String(tag).toLowerCase().includes(query));
+
+        return tagMatches && searchMatches;
       });
 
-      countEl.textContent = filtered.length + " site" + (filtered.length !== 1 ? "s" : "");
+      countEl.textContent = `${filtered.length} site${filtered.length === 1 ? "" : "s"}`;
 
-      if (!filtered.length) {
-        listEl.innerHTML = `<div class="empty">No results</div>`;
+      if (filtered.length === 0) {
+        listEl.innerHTML = '<div class="empty">No sites found. Try a different search.</div>';
         return;
       }
 
-      listEl.innerHTML = filtered.map((l, i) => {
-        const isVerified = !!l.verified;
-        const isNew = !!l.new || (l.tags || []).includes("new");
+      listEl.innerHTML = filtered.map((link, index) => {
+        const verified = Boolean(link.verified);
+        const tags = Array.isArray(link.tags) ? link.tags : [];
+        const isNew = Boolean(link.new) || tags.includes("new");
+        const badges = [
+          isNew ? '<span class="badge new">New</span>' : "",
+          verified
+            ? '<span class="badge verified">Verified</span>'
+            : '<span class="badge unverified">Unverified</span>'
+        ].join("");
 
-        let badges = "";
-        if (isNew) badges += `<span class="badge new">new</span>`;
-        badges += isVerified
-          ? `<span class="badge verified">verified</span>`
-          : `<span class="badge unverified">unverified</span>`;
-
-        const blocked = (l.blockedBy && l.blockedBy.length)
-          ? `<div class="blocked">blocked by <span>${esc(l.blockedBy.join(", "))}</span></div>`
+        const blockedBy = Array.isArray(link.blockedBy) ? link.blockedBy : [];
+        const blocked = blockedBy.length
+          ? `<div class="blocked">Blocked by ${esc(blockedBy.join(", "))}</div>`
           : "";
 
+        const tagMarkup = tags
+          .filter(tag => tag !== "new")
+          .map(tag => `<span class="t">${esc(tag)}</span>`)
+          .join("");
+
         return `
-          <div class="card" data-i="${i}">
+          <article class="card" data-index="${index}" tabindex="0" role="button" aria-label="Open ${esc(link.title || "site")}">
             <div class="card-top">
-              <h2>${esc(l.title)}</h2>
+              <h2>${esc(link.title || "Untitled site")}</h2>
               <div class="badges">${badges}</div>
             </div>
-            <p>${esc(l.description || "")}</p>
-            <div class="meta">
-              ${(l.tags || []).filter(t => t !== "new").map(t => `<span class="t">${esc(t)}</span>`).join("")}
-              ${blocked}
-            </div>
-          </div>
+            <p>${esc(link.description || "")}</p>
+            <div class="meta">${tagMarkup}${blocked}</div>
+          </article>
         `;
       }).join("");
 
       listEl.querySelectorAll(".card").forEach(card => {
-        card.onclick = () => {
-          const l = filtered[parseInt(card.dataset.i, 10)];
-          openLink(l.url, l.title, !!l.verified);
+        const openCard = () => {
+          const link = filtered[Number(card.dataset.index)];
+          if (link && link.url) openLink(link.url, link.title || "Site", Boolean(link.verified));
         };
+
+        card.addEventListener("click", openCard);
+        card.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openCard();
+          }
+        });
       });
     }
 
-    function esc(s) {
-      return String(s)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
-    }
+    continueButton.addEventListener("click", () => {
+      noticeOverlay.classList.remove("open");
+      document.body.classList.remove("modal-open");
+      qEl.focus();
+    });
+
+    backToGoogle.addEventListener("click", () => {
+      window.location.href = "https://www.google.com/";
+    });
+
+    btnCancel.addEventListener("click", closeUnverifiedModal);
+
+    btnConfirm.addEventListener("click", () => {
+      if (pendingUrl) window.open(pendingUrl, "_blank", "noopener,noreferrer");
+      closeUnverifiedModal();
+    });
+
+    unverifiedOverlay.addEventListener("click", event => {
+      if (event.target === unverifiedOverlay) closeUnverifiedModal();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && unverifiedOverlay.classList.contains("open")) {
+        closeUnverifiedModal();
+      }
+    });
 
     qEl.addEventListener("input", render);
+
+    noticeOverlay.classList.add("open");
+    document.body.classList.add("modal-open");
+    continueButton.focus();
+
     load();
   </script>
 </body>
