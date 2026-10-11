@@ -43,6 +43,69 @@
       "blockedBy": ["None"],
       "verified": true,
       "new": true
+    },
+    {
+      "title": "classwork.us.com",
+      "url": "https://classwork.us.com/",
+      "description": "",
+      "tags": ["new"],
+      "blockedBy": ["Unknown"],
+      "verified": false,
+      "new": true
+    },
+    {
+      "title": "Game Hub",
+      "url": "https://finndafish28.github.io/game-hub/",
+      "description": "ContentKeeper may block this custom URL on some school networks.",
+      "tags": ["collection", "new"],
+      "blockedBy": ["ContentKeeper (some schools)"],
+      "verified": false,
+      "new": true
+    },
+    {
+      "title": "new-upd",
+      "url": "https://new-upd.d13qic2f6zga3.amplifyapp.com/",
+      "description": "",
+      "tags": ["new"],
+      "blockedBy": ["Unknown"],
+      "verified": false,
+      "new": true
+    },
+    {
+      "title": "gardenspot2",
+      "url": "https://gardenspot2.vercel.app/",
+      "description": "May be accessible on some networks; availability can vary.",
+      "tags": ["new"],
+      "blockedBy": ["Unknown"],
+      "verified": false,
+      "new": true
+    },
+    {
+      "title": "Science: Acids and Bases",
+      "url": "https://science-acidsandbases.onrender.com/",
+      "description": "",
+      "tags": ["new"],
+      "blockedBy": ["Unknown"],
+      "verified": false,
+      "new": true
+    },
+    {
+      "title": "ME-QR SVG",
+      "url": "https://cdn3.me-qr.com/constructor/user/1810329/1790116791.svg",
+      "description": "",
+      "tags": ["new"],
+      "blockedBy": ["Unknown"],
+      "verified": false,
+      "new": true
+    },
+    {
+      "title": "Kennesaw Commons",
+      "url": "https://gov.kennesawcommons.com/",
+      "description": "",
+      "tags": ["new"],
+      "blockedBy": ["Unknown"],
+      "verified": false,
+      "new": true
     }
   ]
 }
