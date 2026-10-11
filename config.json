@@ -32,7 +32,7 @@
       "description": "May be blocked by None due to the word “game” in the URL.",
       "tags": ["collection", "new"],
       "blockedBy": ["None"],
-      "verified": false,
+      "verified": true,
       "new": true
     },
     {
@@ -41,7 +41,7 @@
       "description": "A collection of games.",
       "tags": ["collection", "new"],
       "blockedBy": ["None"],
-      "verified": false,
+      "verified": true,
       "new": true
     }
   ]
