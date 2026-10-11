@@ -3,19 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#090c14">
+  <meta name="theme-color" content="#000000">
   <title>Unbannedlist</title>
   <style>
     :root {
       color-scheme: dark;
-      --background: #090c14;
-      --surface: #111827;
-      --surface-hover: #172033;
-      --border: #263149;
-      --text: #eef2ff;
-      --muted: #9aa8c2;
-      --accent: #a5b4fc;
-      --accent-strong: #c7d2fe;
+      --background: #000;
+      --surface: #0a0a0a;
+      --surface-hover: #111;
+      --border: #242424;
+      --text: #f5f5f5;
+      --muted: #999;
+      --accent: #d0d0d0;
     }
 
     * {
@@ -26,9 +25,7 @@
 
     body {
       min-height: 100vh;
-      background:
-        radial-gradient(ellipse at 50% -20%, rgba(72, 91, 170, 0.3), transparent 55%),
-        var(--background);
+      background: #000;
       color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.5;
@@ -47,15 +44,18 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(9, 12, 20, 0.78);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 0.94) 42%,
+        rgba(0, 0, 0, 0.65) 72%,
+        rgba(0, 0, 0, 0) 100%
+      );
     }
 
     .header-inner {
       width: min(100% - 40px, 760px);
-      min-height: 72px;
+      min-height: 76px;
       margin: 0 auto;
       display: flex;
       align-items: center;
@@ -64,7 +64,7 @@
     }
 
     .logo {
-      color: var(--text);
+      color: #fff;
       font-size: 1.2rem;
       font-weight: 750;
       letter-spacing: -0.045em;
@@ -72,7 +72,7 @@
     }
 
     .count {
-      color: var(--muted);
+      color: #888;
       font-size: 0.82rem;
       font-variant-numeric: tabular-nums;
     }
@@ -81,7 +81,7 @@
       width: min(100% - 40px, 760px);
       min-height: calc(100vh - 140px);
       margin: 0 auto;
-      padding: 2.5rem 0 5rem;
+      padding: 2rem 0 5rem;
     }
 
     .intro {
@@ -90,7 +90,7 @@
 
     .eyebrow {
       margin-bottom: 0.45rem;
-      color: var(--accent);
+      color: #aaa;
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.13em;
@@ -99,6 +99,7 @@
 
     .intro h1 {
       margin-bottom: 0.45rem;
+      color: #fff;
       font-size: clamp(1.8rem, 5vw, 2.4rem);
       letter-spacing: -0.06em;
       line-height: 1.1;
@@ -122,7 +123,7 @@
       width: 18px;
       height: 18px;
       transform: translateY(-50%);
-      stroke: #8794ae;
+      stroke: #888;
       pointer-events: none;
     }
 
@@ -132,19 +133,18 @@
       border: 1px solid var(--border);
       border-radius: 14px;
       outline: none;
-      background: rgba(17, 24, 39, 0.85);
+      background: var(--surface);
       color: var(--text);
-      transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
     }
 
     .search-wrap input::placeholder {
-      color: #77839b;
+      color: #777;
     }
 
     .search-wrap input:focus {
-      border-color: #818cf8;
-      background: var(--surface);
-      box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.14);
+      border-color: #777;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
     }
 
     .tags {
@@ -159,21 +159,21 @@
       border: 1px solid var(--border);
       border-radius: 999px;
       background: transparent;
-      color: var(--muted);
+      color: #999;
       cursor: pointer;
       font-size: 0.79rem;
       transition: 160ms ease;
     }
 
     .tag:hover {
-      border-color: #69789a;
-      color: var(--text);
+      border-color: #555;
+      color: #fff;
     }
 
     .tag.active {
-      border-color: rgba(165, 180, 252, 0.55);
-      background: rgba(129, 140, 248, 0.16);
-      color: var(--accent-strong);
+      border-color: #777;
+      background: #171717;
+      color: #fff;
     }
 
     .list {
@@ -187,7 +187,7 @@
       padding: 1.2rem 1.3rem;
       border: 1px solid var(--border);
       border-radius: 16px;
-      background: rgba(17, 24, 39, 0.82);
+      background: var(--surface);
       cursor: pointer;
       transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
     }
@@ -205,17 +205,17 @@
 
     .card:hover {
       transform: translateY(-2px);
-      border-color: #485778;
+      border-color: #444;
       background: var(--surface-hover);
     }
 
     .card:hover::before {
-      background: var(--accent);
+      background: #ddd;
     }
 
     .card:focus-visible,
     button:focus-visible {
-      outline: 3px solid rgba(165, 180, 252, 0.75);
+      outline: 3px solid rgba(255, 255, 255, 0.65);
       outline-offset: 3px;
     }
 
@@ -228,7 +228,7 @@
     }
 
     .card h2 {
-      color: var(--text);
+      color: #fff;
       font-size: 1.02rem;
       font-weight: 650;
       letter-spacing: -0.02em;
@@ -252,20 +252,20 @@
 
     .badge.verified {
       border-color: #285447;
-      background: #10281f;
+      background: #102019;
       color: #9ae6c3;
     }
 
     .badge.unverified {
       border-color: #604b25;
-      background: #2a2112;
+      background: #211a0e;
       color: #f6cf83;
     }
 
     .badge.new {
-      border-color: #394672;
-      background: #1a2140;
-      color: #c0cbff;
+      border-color: #444;
+      background: #191919;
+      color: #ddd;
     }
 
     .card p {
@@ -286,26 +286,25 @@
       padding: 0.16rem 0.5rem;
       border: 1px solid var(--border);
       border-radius: 6px;
-      color: #b2bfd6;
+      color: #aaa;
       font-size: 0.7rem;
     }
 
     .blocked {
       margin-left: auto;
-      color: #8794ae;
+      color: #888;
       font-size: 0.72rem;
     }
 
     .empty {
       padding: 3.5rem 1rem;
-      color: var(--muted);
+      color: #888;
       text-align: center;
     }
 
     footer {
       padding: 1.3rem 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      color: #77839b;
+      color: #666;
       font-size: 0.76rem;
       text-align: center;
     }
@@ -318,7 +317,7 @@
       align-items: center;
       justify-content: center;
       padding: 1rem;
-      background: rgba(3, 5, 10, 0.78);
+      background: rgba(0, 0, 0, 0.82);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
@@ -330,10 +329,10 @@
     .modal {
       width: min(100%, 430px);
       padding: 1.7rem;
-      border: 1px solid #2b354b;
+      border: 1px solid #303030;
       border-radius: 20px;
-      background: #111827;
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.48);
+      background: #101010;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
       text-align: center;
       animation: modal-in 180ms ease-out;
     }
@@ -355,36 +354,36 @@
       height: 48px;
       margin: 0 auto 1rem;
       place-items: center;
-      border: 1px solid #604b25;
+      border: 1px solid #555;
       border-radius: 16px;
-      background: #2a2112;
-      color: #f6cf83;
+      background: #1a1a1a;
+      color: #eee;
       font-size: 1.4rem;
       font-weight: 800;
     }
 
     .modal h2 {
       margin-bottom: 0.55rem;
-      color: var(--text);
+      color: #fff;
       font-size: 1.25rem;
       letter-spacing: -0.025em;
     }
 
     .modal p {
       margin-bottom: 1.4rem;
-      color: var(--muted);
+      color: #aaa;
       font-size: 0.91rem;
       line-height: 1.6;
     }
 
     .modal p strong {
-      color: var(--text);
+      color: #fff;
     }
 
     .site-name {
       display: block;
       margin-top: 0.5rem;
-      color: #c0cbff;
+      color: #ddd;
       font-size: 0.8rem;
       overflow-wrap: anywhere;
     }
@@ -407,23 +406,23 @@
     }
 
     .btn-secondary {
-      background: #151d2d;
-      color: var(--text);
+      background: #171717;
+      color: #eee;
     }
 
     .btn-secondary:hover {
-      border-color: #53617c;
-      background: #1b263a;
+      border-color: #555;
+      background: #222;
     }
 
     .btn-primary {
-      border-color: #a5b4fc !important;
-      background: var(--accent);
-      color: #101426;
+      border-color: #eee !important;
+      background: #eee;
+      color: #000;
     }
 
     .btn-primary:hover {
-      background: #c7d2fe;
+      background: #ccc;
     }
 
     @media (max-width: 520px) {
@@ -496,8 +495,6 @@
     </div>
   </main>
 
-  <footer>Edit config.json to add or update links.</footer>
-
   <div class="overlay" id="noticeOverlay">
     <section class="modal" role="dialog" aria-modal="true" aria-labelledby="noticeTitle" aria-describedby="noticeMessage">
       <div class="notice-icon" aria-hidden="true">!</div>
@@ -530,53 +527,53 @@
 
   <script>
     const FALLBACK = {
-      siteTitle: "Unbannedlist",
-      siteDescription: "Game links",
-      links: [
-        {
-          title: "Daknux",
-          url: "https://daknux.github.io/",
-          description: "Collection of unblocked games.",
-          tags: ["collection"],
-          blockedBy: [],
-          verified: true
-        },
-        {
-          title: "Christianity Trees",
-          url: "https://christianitytrees.xishuidata.com/",
-          description: "Unblocked game site.",
-          tags: ["collection"],
-          blockedBy: [],
-          verified: true
-        },
-        {
-          title: "TTBest",
-          url: "https://ttbest.s3.amazonaws.com/index.html",
-          description: "S3-hosted games.",
-          tags: ["collection"],
-          blockedBy: [],
-          verified: true
-        },
-        {
-          title: "games",
-          url: "https://gamebackup.github.io",
-          description: "A collection of games.",
-          tags: ["collection", "new"],
-          blockedBy: [],
-          verified: false,
-          new: true
-        },
-        {
-          title: "kiwk",
-          url: "https://kiwi.at.it/",
-          description: "A game collection.",
-          tags: ["collection", "new"],
-          blockedBy: [],
-          verified: false,
-          new: true
-        }
-      ]
-    };
+  "siteTitle": "Unbanned",
+  "siteDescription": "Web-links",
+  "links": [
+    {
+      "title": "Daknux",
+      "url": "https://daknux.github.io/",
+      "description": "A collection of unbanned games.",
+      "tags": ["collection"],
+      "blockedBy": ["None"],
+      "verified": true
+    },
+    {
+      "title": "Christianity Trees",
+      "url": "https://christianitytrees.xishuidata.com/",
+      "description": "An unbanned game site.",
+      "tags": ["collection"],
+      "blockedBy": ["None"],
+      "verified": true
+    },
+    {
+      "title": "TTBest",
+      "url": "https://ttbest.s3.amazonaws.com/index.html",
+      "description": "unbanned games hosted on Amazon S3.",
+      "tags": ["collection"],
+      "blockedBy": ["None"],
+      "verified": true
+    },
+    {
+      "title": "games",
+      "url": "https://gamebackup.github.io",
+      "description": "May be blocked by ContentKeeper due to the word “game” in the URL.",
+      "tags": ["collection", "new"],
+      "blockedBy": ["None"],
+      "verified": false,
+      "new": true
+    },
+    {
+      "title": "kiwk",
+      "url": "https://kiwi.at.it/",
+      "description": "A collection of games.",
+      "tags": ["collection", "new"],
+      "blockedBy": ["None"],
+      "verified": false,
+      "new": true
+    }
+  ]
+};
 
     let links = [];
     let activeTag = "all";
@@ -722,7 +719,9 @@
       listEl.querySelectorAll(".card").forEach(card => {
         const openCard = () => {
           const link = filtered[Number(card.dataset.index)];
-          if (link && link.url) openLink(link.url, link.title || "Site", Boolean(link.verified));
+          if (link && link.url) {
+            openLink(link.url, link.title || "Site", Boolean(link.verified));
+          }
         };
 
         card.addEventListener("click", openCard);
@@ -748,12 +747,16 @@
     btnCancel.addEventListener("click", closeUnverifiedModal);
 
     btnConfirm.addEventListener("click", () => {
-      if (pendingUrl) window.open(pendingUrl, "_blank", "noopener,noreferrer");
+      if (pendingUrl) {
+        window.open(pendingUrl, "_blank", "noopener,noreferrer");
+      }
       closeUnverifiedModal();
     });
 
     unverifiedOverlay.addEventListener("click", event => {
-      if (event.target === unverifiedOverlay) closeUnverifiedModal();
+      if (event.target === unverifiedOverlay) {
+        closeUnverifiedModal();
+      }
     });
 
     document.addEventListener("keydown", event => {
