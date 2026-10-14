@@ -1,784 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#000000">
-  <title>Unbannedlist</title>
-  <style>
-    :root {
-      color-scheme: dark;
-      --background: #000;
-      --surface: #0a0a0a;
-      --surface-hover: #111;
-      --border: #242424;
-      --text: #f5f5f5;
-      --muted: #999;
-      --accent: #d0d0d0;
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      min-height: 100vh;
-      background: #000;
-      color: var(--text);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.5;
-    }
-    body.modal-open {
-      overflow: hidden;
-    }
-    button,
-    input {
-      font: inherit;
-    }
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 1) 0%,
-        rgba(0, 0, 0, 0.94) 42%,
-        rgba(0, 0, 0, 0.65) 72%,
-        rgba(0, 0, 0, 0) 100%
-      );
-    }
-    .header-inner {
-      width: min(100% - 40px, 760px);
-      min-height: 76px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-    .logo {
-      color: #fff;
-      font-size: 1.2rem;
-      font-weight: 750;
-      letter-spacing: -0.045em;
-      text-decoration: none;
-    }
-    .count {
-      color: #888;
-      font-size: 0.82rem;
-      font-variant-numeric: tabular-nums;
-    }
-    main {
-      width: min(100% - 40px, 760px);
-      min-height: calc(100vh - 140px);
-      margin: 0 auto;
-      padding: 2rem 0 5rem;
-    }
-    .intro {
-      margin-bottom: 1.75rem;
-    }
-    .eyebrow {
-      margin-bottom: 0.45rem;
-      color: #aaa;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-    }
-    .intro h1 {
-      margin-bottom: 0.45rem;
-      color: #fff;
-      font-size: clamp(1.8rem, 5vw, 2.4rem);
-      letter-spacing: -0.06em;
-      line-height: 1.1;
-    }
-    .intro p {
-      max-width: 540px;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-    .search-wrap {
-      position: relative;
-      margin-bottom: 1rem;
-    }
-    .search-wrap svg {
-      position: absolute;
-      top: 50%;
-      left: 16px;
-      width: 18px;
-      height: 18px;
-      transform: translateY(-50%);
-      stroke: #888;
-      pointer-events: none;
-    }
-    .search-wrap input {
-      width: 100%;
-      padding: 0.95rem 1rem 0.95rem 2.9rem;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      outline: none;
-      background: var(--surface);
-      color: var(--text);
-      transition: border-color 160ms ease, box-shadow 160ms ease;
-    }
-    .search-wrap input::placeholder {
-      color: #777;
-    }
-    .search-wrap input:focus {
-      border-color: #777;
-      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
-    }
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.35rem;
-    }
-    .tag {
-      padding: 0.42rem 0.85rem;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: transparent;
-      color: #999;
-      cursor: pointer;
-      font-size: 0.79rem;
-      transition: 160ms ease;
-    }
-    .tag:hover {
-      border-color: #555;
-      color: #fff;
-    }
-    .tag.active {
-      border-color: #777;
-      background: #171717;
-      color: #fff;
-    }
-    .list {
-      display: grid;
-      gap: 0.8rem;
-    }
-    .card {
-      position: relative;
-      overflow: hidden;
-      padding: 1.2rem 1.3rem;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--surface);
-      cursor: pointer;
-      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
-    }
-    .card::before {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: 3px;
-      background: transparent;
-      content: "";
-      transition: background 160ms ease;
-    }
-    .card:hover {
-      transform: translateY(-2px);
-      border-color: #444;
-      background: var(--surface-hover);
-    }
-    .card:hover::before {
-      background: #ddd;
-    }
-    .card:focus-visible,
-    button:focus-visible {
-      outline: 3px solid rgba(255, 255, 255, 0.65);
-      outline-offset: 3px;
-    }
-    .card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.8rem;
-      margin-bottom: 0.4rem;
-    }
-    .card-title-row {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      min-width: 0;
-    }
-    .site-icon {
-      width: 28px;
-      height: 28px;
-      flex-shrink: 0;
-      border-radius: 8px;
-      background: #1a1a1a;
-      object-fit: contain;
-      border: 1px solid var(--border);
-    }
-    .card h2 {
-      color: #fff;
-      font-size: 1.02rem;
-      font-weight: 650;
-      letter-spacing: -0.02em;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .badges {
-      display: flex;
-      flex-shrink: 0;
-      gap: 0.4rem;
-    }
-    .badge {
-      padding: 0.2rem 0.55rem;
-      border: 1px solid transparent;
-      border-radius: 999px;
-      font-size: 0.66rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .badge.verified {
-      border-color: #285447;
-      background: #102019;
-      color: #9ae6c3;
-    }
-    .badge.unverified {
-      border-color: #604b25;
-      background: #211a0e;
-      color: #f6cf83;
-    }
-    .badge.new {
-      border-color: #444;
-      background: #191919;
-      color: #ddd;
-    }
-    .card p {
-      margin-bottom: 0.85rem;
-      color: var(--muted);
-      font-size: 0.88rem;
-      line-height: 1.55;
-    }
-    .meta {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.4rem;
-    }
-    .meta .t {
-      padding: 0.16rem 0.5rem;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: #aaa;
-      font-size: 0.7rem;
-    }
-    .blocked {
-      margin-left: auto;
-      color: #888;
-      font-size: 0.72rem;
-    }
-    .empty {
-      padding: 3.5rem 1rem;
-      color: #888;
-      text-align: center;
-    }
-    footer {
-      padding: 1.3rem 1rem;
-      color: #666;
-      font-size: 0.76rem;
-      text-align: center;
-    }
-    .overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      background: rgba(0, 0, 0, 0.82);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-    .overlay.open {
-      display: flex;
-    }
-    .modal {
-      width: min(100%, 430px);
-      padding: 1.7rem;
-      border: 1px solid #303030;
-      border-radius: 20px;
-      background: #101010;
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
-      text-align: center;
-      animation: modal-in 180ms ease-out;
-    }
-    @keyframes modal-in {
-      from {
-        opacity: 0;
-        transform: translateY(8px) scale(0.98);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-    .notice-icon {
-      display: grid;
-      width: 48px;
-      height: 48px;
-      margin: 0 auto 1rem;
-      place-items: center;
-      border: 1px solid #555;
-      border-radius: 16px;
-      background: #1a1a1a;
-      color: #eee;
-      font-size: 1.4rem;
-      font-weight: 800;
-    }
-    .modal h2 {
-      margin-bottom: 0.55rem;
-      color: #fff;
-      font-size: 1.25rem;
-      letter-spacing: -0.025em;
-    }
-    .modal p {
-      margin-bottom: 1.4rem;
-      color: #aaa;
-      font-size: 0.91rem;
-      line-height: 1.6;
-    }
-    .modal p strong {
-      color: #fff;
-    }
-    .site-name {
-      display: block;
-      margin-top: 0.5rem;
-      color: #ddd;
-      font-size: 0.8rem;
-      overflow-wrap: anywhere;
-    }
-    .modal-actions {
-      display: flex;
-      gap: 0.65rem;
-    }
-    .modal-actions button {
-      min-height: 46px;
-      flex: 1;
-      padding: 0.7rem 0.8rem;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 0.88rem;
-      font-weight: 650;
-      transition: 160ms ease;
-    }
-    .btn-secondary {
-      background: #171717;
-      color: #eee;
-    }
-    .btn-secondary:hover {
-      border-color: #555;
-      background: #222;
-    }
-    .btn-primary {
-      border-color: #eee !important;
-      background: #eee;
-      color: #000;
-    }
-    .btn-primary:hover {
-      background: #ccc;
-    }
-    @media (max-width: 520px) {
-      .header-inner,
-      main {
-        width: min(100% - 32px, 760px);
-      }
-      main {
-        padding-top: 1.8rem;
-      }
-      .card {
-        padding: 1.05rem;
-      }
-      .card-top {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 0.55rem;
-      }
-      .blocked {
-        width: 100%;
-        margin-left: 0;
-      }
-      .modal {
-        padding: 1.35rem;
-      }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080808">
+<title>Unbannedlist — Browse</title>
+<style>
+:root{color-scheme:dark;--bg:#080808;--panel:#101010;--panel2:#151515;--line:#272727;--line2:#383838;--text:#f7f7f7;--muted:#969696;--soft:#c8c8c8;--green:#a7f3c6;--yellow:#f6d58a;--radius:18px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#242424 0,transparent 44%),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}button,input{font:inherit}button{color:inherit}a{color:inherit}button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.topbar{height:76px;position:sticky;top:0;z-index:20;border-bottom:1px solid #ffffff0d;background:#090909d9;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}.topinner{max-width:1320px;height:100%;padding:0 30px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-weight:800;font-size:16px;letter-spacing:-.5px}.brandmark{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:#f5f5f5;color:#080808;font-size:18px;font-weight:900;box-shadow:0 0 24px #ffffff12}.brand small{display:block;color:#777;font-size:10px;letter-spacing:1.4px;font-weight:700;text-transform:uppercase;margin-top:-2px}.nav{display:flex;gap:5px;padding:5px;background:#111;border:1px solid #262626;border-radius:13px}.navbtn{border:0;background:transparent;color:#888;padding:9px 16px;border-radius:9px;cursor:pointer;font-weight:650;transition:.2s}.navbtn:hover{color:white;background:#1a1a1a}.navbtn.active{background:#eee;color:#090909;box-shadow:0 2px 8px #0008}.status{display:flex;align-items:center;gap:8px;color:#8b8b8b;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:#85e6a8;box-shadow:0 0 12px #85e6a855}
+main{max-width:1320px;padding:44px 30px 80px;margin:auto}.page{display:none;animation:appear .28s ease both}.page.active{display:block}@keyframes appear{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:30px}.eyebrow{color:#aaa;text-transform:uppercase;font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:9px}.eyebrow:before{content:"";width:18px;height:1px;background:#aaa}.hero h1{font-size:clamp(34px,5vw,58px);line-height:1;letter-spacing:-2.8px;margin:0 0 14px;font-weight:760}.hero p{margin:0;max-width:600px;color:var(--muted);font-size:15px}.hero-side{display:flex;gap:10px;flex-shrink:0}.metric{padding:14px 18px;border:1px solid var(--line);background:#101010bd;border-radius:14px;min-width:115px}.metric strong{display:block;font-size:22px;letter-spacing:-1px}.metric span{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.toolbar{display:flex;gap:12px;align-items:center;margin:28px 0 18px}.search{position:relative;flex:1;min-width:150px}.search svg{position:absolute;left:17px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:#777;pointer-events:none}.search input,.urlinput{width:100%;border:1px solid #2a2a2a;background:#101010;border-radius:14px;color:#fff;padding:15px 16px 15px 47px;outline:none;transition:border .2s,box-shadow .2s}.search input:focus,.urlinput:focus{border-color:#696969;box-shadow:0 0 0 4px #ffffff0a}.search input::placeholder,.urlinput::placeholder{color:#656565}.filterrow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:24px}.filter{border:1px solid #292929;border-radius:999px;background:#101010;color:#999;padding:8px 14px;cursor:pointer;font-size:12px;font-weight:650;transition:.18s}.filter:hover{color:#fff;border-color:#555}.filter.active{background:#ededed;color:#080808;border-color:#ededed}
+.resultline{display:flex;align-items:center;justify-content:space-between;color:#777;font-size:12px;margin:0 1px 13px}.resultline b{color:#ddd;font-weight:650}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.sitecard{position:relative;min-width:0;padding:19px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,#141414,#0d0d0d);transition:transform .2s,border-color .2s,background .2s;overflow:hidden}.sitecard:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(130deg,#ffffff05,transparent 45%);opacity:0;transition:opacity .2s}.sitecard:hover{transform:translateY(-3px);border-color:#484848;background:#141414}.sitecard:hover:after{opacity:1}.cardtop{display:flex;align-items:center;gap:11px;min-width:0}.favicon{width:39px;height:39px;border:1px solid #303030;border-radius:12px;background:#1b1b1b;object-fit:contain;padding:5px;flex-shrink:0}.sitename{font-size:14px;font-weight:750;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.domain{font-size:11px;color:#777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.badge{margin-left:auto;flex-shrink:0;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;padding:5px 7px;border:1px solid #303030;border-radius:7px;color:#aaa;background:#181818}.badge.ok{color:var(--green);border-color:#244a35;background:#102017}.badge.new{color:#ddd}.description{min-height:42px;color:#9a9a9a;font-size:12px;line-height:1.65;margin:17px 0}.cardbottom{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:13px;border-top:1px solid #242424}.chips{display:flex;flex-wrap:wrap;gap:5px}.chip{border:1px solid #292929;border-radius:6px;padding:3px 7px;color:#888;font-size:10px}.openbtn{border:0;background:transparent;color:#eee;cursor:pointer;font-size:11px;font-weight:750;white-space:nowrap}.openbtn span{color:#777;margin-left:4px;transition:transform .2s;display:inline-block}.openbtn:hover span{transform:translate(2px,-2px)}.empty{grid-column:1/-1;padding:65px 20px;border:1px dashed #333;border-radius:18px;text-align:center;color:#888}.empty strong{display:block;color:#ddd;font-size:16px;margin-bottom:5px}
+.checker-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:16px;margin-top:30px}.panel{border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,#141414,#0c0c0c);padding:26px;box-shadow:0 18px 50px #0003}.panel h2{font-size:19px;letter-spacing:-.5px;margin:0 0 7px}.panel p{color:#999;margin:0 0 22px;font-size:13px}.fieldlabel{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#aaa;font-weight:800;margin-bottom:9px}.urlinput{padding:15px 15px;margin-bottom:12px}.primary{width:100%;padding:14px 16px;border:1px solid #f1f1f1;border-radius:12px;background:#f1f1f1;color:#080808;font-weight:800;cursor:pointer;transition:transform .15s,background .15s}.primary:hover{background:#d9d9d9;transform:translateY(-1px)}.primary:active{transform:scale(.99)}.note{display:flex;gap:10px;padding:13px;border:1px solid #2c2c2c;border-radius:12px;background:#111;margin-top:16px;color:#858585;font-size:11px;line-height:1.6}.note strong{color:#ddd}.resultbox{min-height:220px;border:1px solid #292929;background:#0b0b0b;border-radius:15px;padding:20px;display:flex;flex-direction:column;justify-content:center}.resulticon{width:44px;height:44px;border:1px solid #333;border-radius:14px;display:grid;place-items:center;font-size:19px;color:#ddd;background:#171717;margin-bottom:15px}.resultbox h3{margin:0 0 7px;font-size:16px}.resultbox p{margin:0;color:#888;line-height:1.65;overflow-wrap:anywhere}.resultbox.valid .resulticon{color:var(--green);border-color:#28513a;background:#102017}.resultbox.invalid .resulticon{color:var(--yellow);border-color:#5b4825;background:#211a0e}.resultbox .host{margin-top:12px;padding-top:12px;border-top:1px solid #262626;color:#aaa;font-size:12px;overflow-wrap:anywhere}.howto{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}.step{padding:17px;border:1px solid #252525;background:#101010;border-radius:15px}.step b{display:block;font-size:12px;margin-bottom:6px}.step span{color:#858585;font-size:11px;line-height:1.6}.stepnum{font-size:10px!important;color:#666!important;letter-spacing:1px;margin-bottom:10px;display:block}
+footer{max-width:1320px;padding:20px 30px 30px;margin:auto;border-top:1px solid #ffffff0d;color:#606060;font-size:11px;display:flex;justify-content:space-between;gap:15px}footer span:last-child{color:#858585}
+@media(max-width:1000px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{align-items:flex-start;flex-direction:column}.hero-side{width:100%}.metric{flex:1}.checker-layout{grid-template-columns:1fr}}
+@media(max-width:640px){.topbar{height:auto}.topinner{padding:14px 16px;flex-wrap:wrap;gap:12px}.brand{font-size:14px}.status{display:none}.nav{width:100%;order:3}.navbtn{flex:1;padding:9px 10px}main{padding:32px 16px 55px}.hero h1{font-size:39px;letter-spacing:-2px}.hero p{font-size:13px}.hero-side{gap:7px}.metric{padding:11px 12px;min-width:0}.metric strong{font-size:19px}.metric span{font-size:9px}.toolbar{margin-top:22px}.cards{grid-template-columns:1fr}.sitecard{padding:17px}.checker-layout{margin-top:20px}.panel{padding:19px}.howto{grid-template-columns:1fr}footer{padding:18px 16px;flex-direction:column}.resultline{font-size:11px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
-  <header>
-    <div class="header-inner">
-      <a href="/" class="logo">Unbannedlist</a>
-      <span class="count" id="count"></span>
-    </div>
-  </header>
-  <main>
-    <section class="intro">
-      <div class="eyebrow">Link directory</div>
-      <h1>Find your next favorite.</h1>
-      <p>Search the list or choose a tag to find a site.</p>
-    </section>
-    <div class="search-wrap">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"></path>
-      </svg>
-      <input type="search" id="q" placeholder="Search sites..." autocomplete="off" aria-label="Search sites">
-    </div>
-    <div class="tags" id="tags" aria-label="Filter by tag"></div>
-    <div class="list" id="list" aria-live="polite">
-      <div class="empty">Loading sites…</div>
-    </div>
-  </main>
-  <div class="overlay" id="noticeOverlay">
-    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="noticeTitle" aria-describedby="noticeMessage">
-      <div class="notice-icon" aria-hidden="true">!</div>
-      <h2 id="noticeTitle">NOTICE</h2>
-      <p id="noticeMessage">
-        This site is only for districts that use <strong>ContentKeeper</strong>.
-        Other school-blocking extensions aren’t supported. Thank you.
-      </p>
-      <div class="modal-actions">
-        <button class="btn-secondary" id="backToGoogle" type="button">Back to Google</button>
-        <button class="btn-primary" id="continueButton" type="button">Continue</button>
-      </div>
-    </section>
+<header class="topbar">
+  <div class="topinner">
+    <a class="brand" href="#" aria-label="Unbannedlist home"><span class="brandmark">U</span><span>Unbannedlist<small>Link directory</small></span></a>
+    <nav class="nav" aria-label="Main navigation">
+      <button class="navbtn active" data-page="directory" type="button">Directory</button>
+      <button class="navbtn" data-page="checker" type="button">Checker</button>
+    </nav>
+    <div class="status"><span class="dot"></span> Directory ready</div>
   </div>
-  <div class="overlay" id="unverifiedOverlay">
-    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="unverifiedTitle" aria-describedby="unverifiedMessage">
-      <div class="notice-icon" aria-hidden="true">!</div>
-      <h2 id="unverifiedTitle">Unverified site</h2>
-      <p id="unverifiedMessage">
-        This site hasn’t been verified. Only continue if you trust it.
-        <span class="site-name" id="modalSite"></span>
-      </p>
-      <div class="modal-actions">
-        <button class="btn-secondary" id="btnCancel" type="button">Cancel</button>
-        <button class="btn-primary" id="btnConfirm" type="button">Open site</button>
-      </div>
-    </section>
-  </div>
-  <script>
-    const FALLBACK = {
-  "siteTitle": "Unbanned",
-  "siteDescription": "Web-links",
-  "links": [
-    {
-      "title": "Daknux",
-      "url": "https://daknux.github.io/",
-      "description": "A collection of unblocked games.",
-      "tags": ["collection"],
-      "blockedBy": ["None"],
-      "verified": true
-    },
-    {
-      "title": "Christianity Trees",
-      "url": "https://christianitytrees.xishuidata.com/",
-      "description": "An unblocked game site.",
-      "tags": ["collection"],
-      "blockedBy": ["None"],
-      "verified": true
-    },
-    {
-      "title": "TTBest",
-      "url": "https://ttbest.s3.amazonaws.com/index.html",
-      "description": "Unblocked games hosted on Amazon S3.",
-      "tags": ["collection"],
-      "blockedBy": ["None"],
-      "verified": true
-    },
-    {
-      "title": "games",
-      "url": "https://gamebackup.github.io",
-      "description": "May be blocked by None due to the word “game” in the URL.",
-      "tags": ["collection", "new"],
-      "blockedBy": ["None"],
-      "verified": true,
-      "new": true
-    },
-    {
-      "title": "kiwk",
-      "url": "https://kiwi.at.it/",
-      "description": "A collection of games.",
-      "tags": ["collection", "new"],
-      "blockedBy": ["None"],
-      "verified": true,
-      "new": true
-    },
-    {
-      "title": "classwork.us.com",
-      "url": "https://classwork.us.com/",
-      "description": "",
-      "tags": ["new"],
-      "blockedBy": ["Unknown"],
-      "verified": false,
-      "new": true
-    },
-    {
-      "title": "Game Hub",
-      "url": "https://finndafish28.github.io/game-hub/",
-      "description": "ContentKeeper may block this custom URL on some school networks.",
-      "tags": ["collection", "new"],
-      "blockedBy": ["ContentKeeper (some schools)"],
-      "verified": false,
-      "new": true
-    },
-    {
-      "title": "new-upd",
-      "url": "https://new-upd.d13qic2f6zga3.amplifyapp.com/",
-      "description": "",
-      "tags": ["new"],
-      "blockedBy": ["Unknown"],
-      "verified": false,
-      "new": true
-    },
-    {
-      "title": "gardenspot2",
-      "url": "https://gardenspot2.vercel.app/",
-      "description": "May be accessible on some networks; availability can vary.",
-      "tags": ["new"],
-      "blockedBy": ["Unknown"],
-      "verified": false,
-      "new": true
-    },
-    {
-      "title": "Science: Acids and Bases",
-      "url": "https://science-acidsandbases.onrender.com/",
-      "description": "",
-      "tags": ["new"],
-      "blockedBy": ["Unknown"],
-      "verified": false,
-      "new": true
-    },
-    {
-      "title": "ME-QR SVG",
-      "url": "https://cdn3.me-qr.com/constructor/user/1810329/1790116791.svg",
-      "description": "",
-      "tags": ["new"],
-      "blockedBy": ["Unknown"],
-      "verified": false,
-      "new": true
-    },
-    {
-      "title": "Kennesaw Commons",
-      "url": "https://gov.kennesawcommons.com/",
-      "description": "",
-      "tags": ["new"],
-      "blockedBy": ["Unknown"],
-      "verified": false,
-      "new": true
-    }
-  ]
-}
-;
-    let links = [];
-    let activeTag = "all";
-    let pendingUrl = null;
-    const listEl = document.getElementById("list");
-    const tagsEl = document.getElementById("tags");
-    const qEl = document.getElementById("q");
-    const countEl = document.getElementById("count");
-    const noticeOverlay = document.getElementById("noticeOverlay");
-    const unverifiedOverlay = document.getElementById("unverifiedOverlay");
-    const modalSite = document.getElementById("modalSite");
-    const btnCancel = document.getElementById("btnCancel");
-    const btnConfirm = document.getElementById("btnConfirm");
-    const continueButton = document.getElementById("continueButton");
-    const backToGoogle = document.getElementById("backToGoogle");
-
-    function esc(value) {
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-    // Get a favicon URL: use the provided icon, or generate one from the domain
-    function getIconUrl(link) {
-      if (link.icon) return link.icon;
-      try {
-        const hostname = new URL(link.url).hostname;
-        return `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
-      } catch {
-        return "";
-      }
-    }
-
-    function applyData(data) {
-      const siteTitle = data.siteTitle || "Unbannedlist";
-      document.title = siteTitle;
-      document.querySelector(".logo").textContent = siteTitle;
-      links = Array.isArray(data.links) ? data.links : [];
-      buildTags();
-      render();
-    }
-
-    async function load() {
-      try {
-        const response = await fetch("config.json?t=" + Date.now());
-        if (!response.ok) throw new Error("Could not load config");
-        applyData(await response.json());
-      } catch {
-        applyData(FALLBACK);
-      }
-    }
-
-    function buildTags() {
-      const tagSet = new Set();
-      links.forEach(link => {
-        (link.tags || []).forEach(tag => tagSet.add(tag));
-      });
-      const allTags = ["all", ...Array.from(tagSet).sort()];
-      tagsEl.innerHTML = allTags.map(tag => {
-        const label = tag === "all" ? "All" : tag;
-        const selected = tag === activeTag ? " active" : "";
-        return `<button class="tag${selected}" type="button" data-tag="${esc(tag)}" aria-pressed="${tag === activeTag}">${esc(label)}</button>`;
-      }).join("");
-      tagsEl.querySelectorAll(".tag").forEach(button => {
-        button.addEventListener("click", () => {
-          activeTag = button.dataset.tag;
-          buildTags();
-          render();
-        });
-      });
-    }
-
-    function openLink(url, title, verified) {
-      if (verified) {
-        window.open(url, "_blank", "noopener,noreferrer");
-        return;
-      }
-      pendingUrl = url;
-      modalSite.textContent = `${title} — ${url.replace(/^https?:\/\//, "")}`;
-      unverifiedOverlay.classList.add("open");
-      document.body.classList.add("modal-open");
-      btnCancel.focus();
-    }
-
-    function closeUnverifiedModal() {
-      unverifiedOverlay.classList.remove("open");
-      document.body.classList.remove("modal-open");
-      pendingUrl = null;
-    }
-
-    function render() {
-      const query = qEl.value.trim().toLowerCase();
-      const filtered = links.filter(link => {
-        const tags = Array.isArray(link.tags) ? link.tags : [];
-        const tagMatches = activeTag === "all" || tags.includes(activeTag);
-        const searchMatches = !query ||
-          String(link.title || "").toLowerCase().includes(query) ||
-          String(link.description || "").toLowerCase().includes(query) ||
-          tags.some(tag => String(tag).toLowerCase().includes(query));
-        return tagMatches && searchMatches;
-      });
-      countEl.textContent = `${filtered.length} site${filtered.length === 1 ? "" : "s"}`;
-      if (filtered.length === 0) {
-        listEl.innerHTML = '<div class="empty">No sites found. Try a different search.</div>';
-        return;
-      }
-      listEl.innerHTML = filtered.map((link, index) => {
-        const verified = Boolean(link.verified);
-        const tags = Array.isArray(link.tags) ? link.tags : [];
-        const isNew = Boolean(link.new) || tags.includes("new");
-        const badges = [
-          isNew ? '<span class="badge new">New</span>' : "",
-          verified
-            ? '<span class="badge verified">Verified</span>'
-            : '<span class="badge unverified">Unverified</span>'
-        ].join("");
-        const blockedBy = Array.isArray(link.blockedBy) ? link.blockedBy : [];
-        const blocked = blockedBy.length
-          ? `<div class="blocked">Blocked by ${esc(blockedBy.join(", "))}</div>`
-          : "";
-        const tagMarkup = tags
-          .filter(tag => tag !== "new")
-          .map(tag => `<span class="t">${esc(tag)}</span>`)
-          .join("");
-
-        const iconUrl = getIconUrl(link);
-        const iconHtml = iconUrl
-          ? `<img class="site-icon" src="${esc(iconUrl)}" alt="" width="28" height="28" loading="lazy" onerror="this.style.display='none'">`
-          : "";
-
-        return `
-          <article class="card" data-index="${index}" tabindex="0" role="button" aria-label="Open ${esc(link.title || "site")}">
-            <div class="card-top">
-              <div class="card-title-row">
-                ${iconHtml}
-                <h2>${esc(link.title || "Untitled site")}</h2>
-              </div>
-              <div class="badges">${badges}</div>
-            </div>
-            <p>${esc(link.description || "")}</p>
-            <div class="meta">${tagMarkup}${blocked}</div>
-          </article>
-        `;
-      }).join("");
-      listEl.querySelectorAll(".card").forEach(card => {
-        const openCard = () => {
-          const link = filtered[Number(card.dataset.index)];
-          if (link && link.url) {
-            openLink(link.url, link.title || "Site", Boolean(link.verified));
-          }
-        };
-        card.addEventListener("click", openCard);
-        card.addEventListener("keydown", event => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            openCard();
-          }
-        });
-      });
-    }
-
-    continueButton.addEventListener("click", () => {
-      noticeOverlay.classList.remove("open");
-      document.body.classList.remove("modal-open");
-      qEl.focus();
-    });
-    backToGoogle.addEventListener("click", () => {
-      window.location.href = "https://www.google.com/";
-    });
-    btnCancel.addEventListener("click", closeUnverifiedModal);
-    btnConfirm.addEventListener("click", () => {
-      if (pendingUrl) {
-        window.open(pendingUrl, "_blank", "noopener,noreferrer");
-      }
-      closeUnverifiedModal();
-    });
-    unverifiedOverlay.addEventListener("click", event => {
-      if (event.target === unverifiedOverlay) {
-        closeUnverifiedModal();
-      }
-    });
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape" && unverifiedOverlay.classList.contains("open")) {
-        closeUnverifiedModal();
-      }
-    });
-    qEl.addEventListener("input", render);
-    noticeOverlay.classList.add("open");
-    document.body.classList.add("modal-open");
-    continueButton.focus();
-    load();
-  </script>
+</header>
+<main>
+  <section class="page active" id="directory">
+    <div class="hero">
+      <div><div class="eyebrow">Browse links</div><h1>Find a site.<br>Get straight to it.</h1><p>Search the directory, filter by tag, and open a site from its card.</p></div>
+      <div class="hero-side"><div class="metric"><strong id="totalMetric">—</strong><span>Sites listed</span></div><div class="metric"><strong id="verifiedMetric">—</strong><span>Marked verified</span></div></div>
+    </div>
+    <div class="toolbar">
+      <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg><input id="searchInput" type="search" placeholder="Search names, tags, or descriptions…" autocomplete="off" aria-label="Search sites"></label>
+    </div>
+    <div class="filterrow" id="filters"></div>
+    <div class="resultline"><span id="resultCount">Loading sites…</span><span>Sorted by directory order</span></div>
+    <div class="cards" id="cards" aria-live="polite"></div>
+  </section>
+  <section class="page" id="checker">
+    <div class="hero">
+      <div><div class="eyebrow">URL checker</div><h1>Check a link<br>before you open it.</h1><p>Enter a website address to check that it is written correctly and see its domain.</p></div>
+    </div>
+    <div class="checker-layout">
+      <section class="panel">
+        <h2>Website address</h2><p>Paste a full URL or type a domain like example.com.</p>
+        <form id="checkerForm">
+          <label class="fieldlabel" for="urlInput">URL to check</label>
+          <input class="urlinput" id="urlInput" type="text" placeholder="https://example.com" autocomplete="url" spellcheck="false" required>
+          <button class="primary" type="submit">Check URL <span aria-hidden="true">→</span></button>
+        </form>
+        <div class="note"><span>ⓘ</span><span><strong>What this checks:</strong> URL format only. It does not test or predict whether a school network or filtering extension will block a site.</span></div>
+      </section>
+      <section class="panel">
+        <h2>Result</h2><p>Your check will show here.</p>
+        <div class="resultbox" id="resultBox" aria-live="polite"><div class="resulticon">↗</div><h3>Ready to check</h3><p>Enter a website address on the left, then select Check URL.</p></div>
+      </section>
+    </div>
+    <div class="howto">
+      <div class="step"><span class="stepnum">01 / ENTER</span><b>Paste a URL</b><span>Use a domain such as example.com or a full https:// address.</span></div>
+      <div class="step"><span class="stepnum">02 / CHECK</span><b>Review the format</b><span>The checker looks for a valid web address and reads its domain.</span></div>
+      <div class="step"><span class="stepnum">03 / REMEMBER</span><b>Follow school rules</b><span>A valid URL does not mean a site is approved or available on your network.</span></div>
+    </div>
+  </section>
+</main>
+<footer><span>Unbannedlist · Link directory</span><span>Check links carefully. Only open sites you trust.</span></footer>
+<script>
+const FALLBACK = {"siteTitle":"Unbannedlist","siteDescription":"Web links","links":[]};
+let links=[];
+let activeTag="all";
+const cardsEl=document.getElementById("cards");
+const filtersEl=document.getElementById("filters");
+const searchEl=document.getElementById("searchInput");
+const resultCount=document.getElementById("resultCount");
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function iconFor(link){try{return link.icon||`https://www.google.com/s2/favicons?domain=${encodeURIComponent(new URL(link.url).hostname)}&sz=64`;}catch{return "";}}
+function setPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===name));document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.page===name));window.scrollTo({top:0,behavior:"smooth"});}
+document.querySelectorAll(".navbtn").forEach(b=>b.addEventListener("click",()=>setPage(b.dataset.page)));
+document.querySelector(".brand").addEventListener("click",e=>{e.preventDefault();setPage("directory");});
+function buildFilters(){const set=new Set();links.forEach(l=>(Array.isArray(l.tags)?l.tags:[]).filter(t=>t!=="new").forEach(t=>set.add(t)));const all=["all",...Array.from(set).sort()];filtersEl.innerHTML=all.map(t=>`<button class="filter ${t===activeTag?"active":""}" data-tag="${esc(t)}" aria-pressed="${t===activeTag}" type="button">${esc(t==="all"?"All sites":t)}</button>`).join("");filtersEl.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{activeTag=b.dataset.tag;buildFilters();render();}));}
+function render(){const q=searchEl.value.trim().toLowerCase();const filtered=links.filter(l=>{const tags=Array.isArray(l.tags)?l.tags:[];return(activeTag==="all"||tags.includes(activeTag))&&(!q||[l.title,l.description,l.url,...tags].some(v=>String(v||"").toLowerCase().includes(q)));});resultCount.innerHTML=`Showing <b>${filtered.length}</b> of <b>${links.length}</b> sites`;if(!filtered.length){cardsEl.innerHTML='<div class="empty"><strong>No sites found</strong>Try another search or choose a different tag.</div>';return;}cardsEl.innerHTML=filtered.map(l=>{let host="";try{host=new URL(l.url).hostname;}catch{}const tags=(Array.isArray(l.tags)?l.tags:[]).filter(t=>t!=="new").slice(0,3);const badge=l.new||(l.tags||[]).includes("new")?'<span class="badge new">New</span>':l.verified?'<span class="badge ok">Verified</span>':'<span class="badge">Unverified</span>';return `<article class="sitecard"><div class="cardtop"><img class="favicon" src="${esc(iconFor(l))}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><div style="min-width:0;flex:1"><div class="sitename">${esc(l.title||"Untitled site")}</div><div class="domain">${esc(host||l.url||"")}</div></div>${badge}</div><p class="description">${esc(l.description||"No description provided.")}</p><div class="cardbottom"><div class="chips">${tags.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div><button class="openbtn" type="button" data-url="${esc(l.url||"")}" data-title="${esc(l.title||"Site")}" data-verified="${Boolean(l.verified)}">Open site <span>↗</span></button></div></article>`;}).join("");cardsEl.querySelectorAll(".openbtn").forEach(b=>b.addEventListener("click",()=>{let u;try{u=new URL(b.dataset.url);if(!["http:","https:"].includes(u.protocol))throw 0;}catch{alert("This site has an invalid URL.");return;}if(b.dataset.verified!=="true"&&!confirm(`This site is not marked verified.\n\n${b.dataset.title}\n${u.hostname}\n\nOpen it anyway?`))return;window.open(u.href,"_blank","noopener,noreferrer");}));}
+searchEl.addEventListener("input",render);
+document.getElementById("checkerForm").addEventListener("submit",e=>{e.preventDefault();const raw=document.getElementById("urlInput").value.trim();const box=document.getElementById("resultBox");let parsed;try{parsed=new URL(/^[a-zA-Z][a-zA-Z\d+.-]*:/.test(raw)?raw:"https://"+raw);if(!["http:","https:"].includes(parsed.protocol)||!parsed.hostname.includes(".")||parsed.hostname.startsWith(".")||parsed.hostname.endsWith("."))throw new Error("invalid");}catch{box.className="resultbox invalid";box.innerHTML='<div class="resulticon">!</div><h3>Check the address</h3><p>Enter a domain like example.com or a full URL starting with https://.</p>';return;}box.className="resultbox valid";box.innerHTML=`<div class="resulticon">✓</div><h3>URL format looks valid</h3><p>This address is written in a format browsers can use. This does not confirm that the website works or is allowed on your network.</p><div class="host"><strong>Domain</strong><br>${esc(parsed.hostname)}<br><br><strong>Full address</strong><br>${esc(parsed.href)}</div>`;});
+async function load(){try{const r=await fetch("config.json?t="+Date.now());if(!r.ok)throw new Error();const d=await r.json();links=Array.isArray(d.links)?d.links:FALLBACK.links;}catch{links=FALLBACK.links;}document.getElementById("totalMetric").textContent=links.length;document.getElementById("verifiedMetric").textContent=links.filter(l=>l.verified).length;buildFilters();render();}
+load();
+</script>
 </body>
 </html>
